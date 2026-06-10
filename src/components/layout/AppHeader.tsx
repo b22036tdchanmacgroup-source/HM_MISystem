@@ -155,7 +155,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   <aside className="side">
     <HeaderTitle
       showTeamView={showTeamView}
-      onToggle={() => setShowTeamView(v => !v)}
+      onToggle={() => { setShowTeamView(v => !v); setActiveSummaryFilter(null); }}
     />
     <HeaderStats
       activeSummaryFilter={activeSummaryFilter}

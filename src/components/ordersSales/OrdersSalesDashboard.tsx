@@ -47,12 +47,12 @@ const GROUP_FIN = {
 };
 
 const INDUSTRY_NEWS = [
-  { company: '한맥기술', title: '스마트시티 교통 인프라 기본설계 용역 우선협상대상자 선정', date: '2026.05.28', tag: 'ENG' },
-  { company: '삼안',     title: '국토부 제3연육교 기본설계 및 실시설계 용역 수주',           date: '2026.05.22', tag: 'ENG' },
-  { company: '장헌산업', title: '친환경 건축자재 동남아 3개국 수출 MOU 체결',                date: '2026.05.15', tag: 'M&C' },
-  { company: '한라',     title: '환경부 하수처리시설 현대화 사업 설계·시공 통합 발주 참여', date: '2026.05.10', tag: 'EPC' },
-  { company: '바론',     title: 'AI 기반 제조실행시스템(MES) 공급 계약 체결',               date: '2026.05.08', tag: 'IT'  },
-  { company: '피티씨',   title: '중공업 플랜트용 특수 부품 납품 물량 확대 계약',            date: '2026.04.30', tag: 'M&C' },
+  { company: '한맥기술', title: '스마트시티 교통인프라 기본설계 수주',    date: '05.28', type: 'info' as const },
+  { company: '삼안',     title: '제3연육교 기본·실시설계 용역 수주',      date: '05.22', type: 'info' as const },
+  { company: '장헌산업', title: '동남아 3개국 친환경자재 수출 MOU 체결', date: '05.15', type: 'warn' as const },
+  { company: '한라',     title: '하수처리 현대화 설계·시공 통합 입찰',    date: '05.10', type: 'ok'   as const },
+  { company: '바론',     title: 'AI 기반 MES 공급 계약 체결',            date: '05.08', type: 'info' as const },
+  { company: '피티씨',   title: '플랜트 특수부품 납품 물량 확대 계약',    date: '04.30', type: 'warn' as const },
 ];
 
 // ── 도넛 차트 ──────────────────────────────────────────────────
@@ -122,7 +122,7 @@ const KpiPanel: React.FC<{ type: 'orders' | 'sales'; target: number; actual: num
           <span className="osd-kpi-icon" style={{ color: accentColor }}>{icon}</span>
           <span className="osd-kpi-title" style={{ color: accentColor }}>{label}</span>
         </div>
-        <div className="osd-kpi-table">
+        <div className="osd-kpi-table" style={{ '--kpi-accent': accentColor } as React.CSSProperties}>
           <div className="osd-kpi-col">
             <span className="osd-kpi-col-label">목표</span>
             <span className="osd-kpi-col-num">{target.toLocaleString()}</span>
@@ -142,8 +142,8 @@ const KpiPanel: React.FC<{ type: 'orders' | 'sales'; target: number; actual: num
             <div className="osd-kpi-bar-target" />
           </div>
           <div className="osd-kpi-bar-labels">
-            <span style={{ color: accentColor, fontSize: '15px', fontWeight: 700 }}>{actual.toLocaleString()}</span>
-            <span style={{ fontSize: '13px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>목표 {target.toLocaleString()}</span>
+            <span style={{ color: accentColor, fontSize: '18px', fontWeight: 700 }}>{actual.toLocaleString()}</span>
+            <span style={{ fontSize: '16px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>목표 {target.toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ export const OrdersSalesDashboard: React.FC = () => {
             const sDiff = comp.sales.actual - comp.prevSales;
             const sDiffPct = ((sDiff / comp.prevSales) * 100).toFixed(1);
             return (
-              <div key={comp.id} className="osd-company-card">
+              <div key={comp.id} className="osd-company-card" style={{ '--cc': comp.color } as React.CSSProperties}>
                 <div className="osd-cc-header">
                   {comp.logo
                     ? <img src={comp.logo} alt={comp.name} className="osd-cc-logo" />
@@ -292,30 +292,28 @@ export const OrdersSalesDashboard: React.FC = () => {
           {insightTab === 'insight' ? (
             <div className="osd-insight-body">
               <div className="osd-alert-item warn">
-                <span className="osd-alert-badge warn">주의</span>
+                <span className="osd-alert-dot warn" />
                 <span>가족사 수주 목표 달성률 <b>{Math.round((GROUP.orders.actual / GROUP.orders.target) * 100)}%</b> — 목표 대비 관리 필요</span>
               </div>
               <div className="osd-alert-item warn">
-                <span className="osd-alert-badge warn">주의</span>
+                <span className="osd-alert-dot warn" />
                 <span>가족사 매출 목표 달성률 <b>{Math.round((GROUP.sales.actual / GROUP.sales.target) * 100)}%</b> — 목표 대비 관리 필요</span>
               </div>
               <div className="osd-alert-item info">
-                <span className="osd-alert-badge info">달성</span>
+                <span className="osd-alert-dot info" />
                 <span><b>장헌</b> 수주 80.0% — 가족사 내 최고 달성률 기록 중</span>
               </div>
               <div className="osd-alert-item ok">
-                <span className="osd-alert-badge ok">정상</span>
+                <span className="osd-alert-dot ok" />
                 <span><b>바론</b> IT 매출 75.0% — 안정적 수익 구조 진입</span>
               </div>
             </div>
           ) : (
             <div className="osd-industry-news">
               {INDUSTRY_NEWS.map((n, i) => (
-                <div key={i} className="osd-news-item">
-                  <span className={`osd-news-tag osd-news-tag--${n.tag.replace('&', 'n').toLowerCase()}`}>{n.tag}</span>
-                  <span className="osd-news-company">{n.company}</span>
-                  <span className="osd-news-title">{n.title}</span>
-                  <span className="osd-news-date">{n.date}</span>
+                <div key={i} className={`osd-alert-item ${n.type}`}>
+                  <span className={`osd-alert-dot ${n.type}`} />
+                  <span><b>{n.company}</b> {n.title} <span className="osd-news-date">{n.date}</span></span>
                 </div>
               ))}
             </div>
@@ -327,7 +325,7 @@ export const OrdersSalesDashboard: React.FC = () => {
           <div className="osd-insight-hdr"><span>가족사 주요 인사이트</span></div>
           <div className="osd-insight-kpis-row">
             <div className="osd-fin-kpi">
-              <span className="osd-fin-kpi-label">영업이익</span>
+              <span className="osd-fin-kpi-label operating">영업이익</span>
               <span className="osd-fin-kpi-val">{GROUP_FIN.operatingProfit}억</span>
               <div className="osd-fin-kpi-sub">
                 <span>이익률 {GROUP_FIN.operatingMargin}%</span>
@@ -335,7 +333,7 @@ export const OrdersSalesDashboard: React.FC = () => {
               </div>
             </div>
             <div className="osd-fin-kpi">
-              <span className="osd-fin-kpi-label">당기순이익</span>
+              <span className="osd-fin-kpi-label net">당기순이익</span>
               <span className="osd-fin-kpi-val">{GROUP_FIN.netIncome}억</span>
               <div className="osd-fin-kpi-sub">
                 <span>이익률 {GROUP_FIN.netMargin}%</span>
@@ -343,7 +341,7 @@ export const OrdersSalesDashboard: React.FC = () => {
               </div>
             </div>
             <div className="osd-fin-kpi">
-              <span className="osd-fin-kpi-label">프로젝트 건수</span>
+              <span className="osd-fin-kpi-label projects">프로젝트 건수</span>
               <span className="osd-fin-kpi-val">{GROUP_FIN.domesticProjects + GROUP_FIN.overseasProjects}건</span>
               <div className="osd-fin-kpi-sub">
                 <span>국내 {GROUP_FIN.domesticProjects}</span>
@@ -352,7 +350,7 @@ export const OrdersSalesDashboard: React.FC = () => {
               </div>
             </div>
             <div className="osd-fin-kpi">
-              <span className="osd-fin-kpi-label">해외지사</span>
+              <span className="osd-fin-kpi-label overseas">해외지사</span>
               <span className="osd-fin-kpi-val">{GROUP_FIN.overseasOffices}개소</span>
               <div className="osd-fin-kpi-sub">
                 <span>{GROUP_FIN.overseasCountries}개국 운영</span>

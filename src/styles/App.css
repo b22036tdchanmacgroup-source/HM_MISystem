@@ -10484,7 +10484,7 @@ aside.side {
 }
 
 .osd-card-title {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--brown-dark);
   white-space: nowrap;
@@ -10553,7 +10553,7 @@ aside.side {
 }
 
 .osd-legend-name {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--brown-dark);
   flex: 1;
   white-space: nowrap;
@@ -10563,7 +10563,7 @@ aside.side {
 }
 
 .osd-legend-pct {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--brown-main);
   font-weight: 700;
   white-space: nowrap;
@@ -10598,7 +10598,7 @@ aside.side {
 .osd-kpi-icon { line-height: 1; }
 
 .osd-kpi-title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -10607,10 +10607,26 @@ aside.side {
 .osd-kpi-table {
   display: flex;
   gap: 0;
-  border: 1px solid var(--border-light);
-  border-radius: 10px;
-  overflow: hidden;
   flex: 1;
+  position: relative;
+}
+.osd-kpi-table::before,
+.osd-kpi-table::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 14px;
+  height: 12px;
+  pointer-events: none;
+  border-top: 2px solid var(--kpi-accent, var(--border-light));
+}
+.osd-kpi-table::before {
+  left: 0;
+  border-left: 2px solid var(--kpi-accent, var(--border-light));
+}
+.osd-kpi-table::after {
+  right: 0;
+  border-right: 2px solid var(--kpi-accent, var(--border-light));
 }
 
 .osd-kpi-col {
@@ -10626,14 +10642,14 @@ aside.side {
 .osd-kpi-col:last-child { border-right: none; }
 
 .osd-kpi-col-label {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--text-muted);
   font-weight: 600;
   white-space: nowrap;
 }
 
 .osd-kpi-col-num {
-  font-size: 34px;
+  font-size: 41px;
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.04em;
@@ -10642,11 +10658,11 @@ aside.side {
 }
 
 .osd-kpi-col-num.osd-kpi-actual {
-  font-size: 36px;
+  font-size: 43px;
 }
 
 .osd-kpi-col-rate {
-  font-size: 44px;
+  font-size: 53px;
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 1;
@@ -10694,8 +10710,8 @@ aside.side {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
+  width: 116px;
+  height: 116px;
   background: linear-gradient(135deg, #1a5e35, #92400e);
   border-radius: 50%;
   align-self: center;
@@ -10704,11 +10720,11 @@ aside.side {
 }
 
 .osd-tvsa-text {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 800;
   color: #fff;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.6;
   letter-spacing: 0.01em;
 }
 
@@ -10739,7 +10755,7 @@ aside.side {
 }
 
 .osd-domain-name {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 800;
   color: #fff;
   white-space: nowrap;
@@ -10749,7 +10765,7 @@ aside.side {
 }
 
 .osd-domain-cnt {
-  font-size: 13px;
+  font-size: 16px;
   color: rgba(255,255,255,0.65);
   white-space: nowrap;
   flex-shrink: 0;
@@ -10774,6 +10790,31 @@ aside.side {
   gap: 15px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(62,51,44,0.06);
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.osd-company-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--cc, var(--border-light));
+  opacity: 0;
+  transition: opacity 0.22s;
+}
+.osd-company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.09), 0 0 0 2px var(--cc, rgba(62,51,44,0.15));
+  z-index: 2;
+}
+.osd-company-card:hover::before {
+  opacity: 1;
+}
+.osd-company-card:hover .osd-cc-name {
+  color: var(--cc, var(--brown-dark));
+}
+.osd-company-card:hover .osd-cc-bar-fill {
+  filter: brightness(1.12);
 }
 
 .osd-cc-header {
@@ -10807,7 +10848,7 @@ aside.side {
 
 .osd-cc-name {
   flex: 1;
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--brown-dark);
   white-space: nowrap;
@@ -10837,7 +10878,7 @@ aside.side {
 }
 
 .osd-cc-metric-label {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -10845,7 +10886,7 @@ aside.side {
 .osd-cc-metric-label.sales  { color: #92400e; }
 
 .osd-cc-metric-rate {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -10860,13 +10901,13 @@ aside.side {
 }
 
 .osd-cc-num-lbl {
-  font-size: 13px;
+  font-size: 16px;
   color: var(--text-muted);
   white-space: nowrap;
 }
 
 .osd-cc-num {
-  font-size: 16px;
+  font-size: 19px;
   color: var(--brown-dark);
   white-space: nowrap;
 }
@@ -10894,7 +10935,7 @@ aside.side {
   align-items: center;
   gap: 5px;
   margin-top: 2px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .osd-cc-yoy-lbl {
@@ -10923,6 +10964,7 @@ aside.side {
 /* ── 3행: 인당 생산성 ── */
 .osd-row-percap {
   flex: 0 0 auto;
+  min-height: 110px;
 }
 
 .osd-percap-panel {
@@ -10930,14 +10972,14 @@ aside.side {
   border-radius: 14px;
   border: 1px solid var(--border-light);
   box-shadow: 0 2px 6px rgba(62,51,44,0.08);
-  padding: 7px 14px;
+  padding: 14px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
 .osd-percap-hdr {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--brown-dark);
   padding-left: 12px;
@@ -10991,7 +11033,7 @@ aside.side {
 }
 
 .osd-percap-item-name {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--brown-dark);
   white-space: nowrap;
@@ -11001,13 +11043,13 @@ aside.side {
 }
 
 .osd-percap-item-emp {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--text-muted);
   white-space: nowrap;
 }
 
 .osd-percap-item-vals {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--text-main);
   white-space: nowrap;
@@ -11033,13 +11075,31 @@ aside.side {
   flex-direction: column;
   gap: 10px;
   overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.25s ease;
+}
+.osd-insight-card:hover {
+  box-shadow: 0 8px 26px rgba(62,51,44,0.16);
+}
+.osd-insight-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #1a5e35 0%, #f59e0b 50%, #92400e 100%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.osd-insight-card:hover::after {
+  opacity: 1;
 }
 
 .osd-insight-hdr {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--brown-dark);
   padding-bottom: 8px;
@@ -11070,7 +11130,7 @@ aside.side {
 .osd-insight-body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
   overflow: hidden;
   flex: 1;
   min-height: 0;
@@ -11079,32 +11139,35 @@ aside.side {
 .osd-alert-item {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
-  font-size: 15px;
+  gap: 10px;
+  font-size: 16px;
   color: var(--brown-dark);
-  line-height: 1.5;
-  overflow: hidden;
+  line-height: 1.7;
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--border-light);
+  border-radius: 4px;
+  transition: background 0.15s;
 }
+
+.osd-alert-item:last-child { border-bottom: none; }
+.osd-alert-item:hover { background: rgba(62,51,44,0.03); }
 
 .osd-alert-item > span:last-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow: visible;
 }
 
-.osd-alert-badge {
-  font-size: 12px;
-  font-weight: 800;
-  padding: 2px 9px;
-  border-radius: 5px;
-  white-space: nowrap;
+/* 동그라미 색상 지시자 */
+.osd-alert-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 6px;
 }
-
-.osd-alert-badge.warn { background: #fef3c7; color: #b45309; }
-.osd-alert-badge.info { background: #dbeafe; color: #1d4ed8; }
-.osd-alert-badge.ok   { background: #d1fae5; color: #065f46; }
+.osd-alert-dot.warn { background: #f59e0b; }
+.osd-alert-dot.info { background: #3b82f6; }
+.osd-alert-dot.ok   { background: #10b981; }
 
 /* 그룹 인사이트 KPI — 2×2 */
 .osd-insight-kpis {
@@ -11143,7 +11206,7 @@ aside.side {
 /* 전략 코멘트 */
 .osd-strategy-text p {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--brown-dark);
   line-height: 1.7;
   padding: 8px 0;
@@ -11163,13 +11226,14 @@ aside.side {
   display: flex;
   flex-shrink: 0;
   border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(to bottom, #faf9f7 0%, #fff 100%);
 }
 
 .osd-itab {
   flex: 1;
-  padding: 9px 12px;
-  font-size: 13px;
-  font-weight: 700;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 800;
   color: var(--text-muted);
   background: transparent;
   border: none;
@@ -11183,47 +11247,60 @@ aside.side {
 
 .osd-itab:hover {
   color: var(--brown-dark);
-  background: var(--bg-beige);
+  background: rgba(62,51,44,0.03);
 }
 
 .osd-itab.active {
-  color: #1a5e35;
-  border-bottom-color: #1a5e35;
-  background: transparent;
+  color: var(--brown-dark);
+  font-weight: 900;
+  border-bottom-color: var(--brown-main, #92400e);
+  background: #fff;
 }
 
 .osd-insight-card--tabs .osd-insight-body {
-  padding: 10px 16px;
+  padding: 4px 12px;
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  max-height: 182px;
 }
+.osd-insight-card--tabs .osd-insight-body::-webkit-scrollbar { width: 4px; }
+.osd-insight-card--tabs .osd-insight-body::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 
 /* ── 산업 동향 뉴스 리스트 ── */
 .osd-industry-news {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 0;
   overflow-y: auto;
+  max-height: 182px;
   flex: 1;
   min-height: 0;
-  padding: 10px 16px;
+  padding: 4px 12px;
 }
+.osd-industry-news::-webkit-scrollbar { width: 4px; }
+.osd-industry-news::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 
 .osd-news-item {
   display: flex;
   align-items: baseline;
   gap: 7px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--brown-dark);
-  padding: 5px 0;
+  padding: 5px 4px;
   border-bottom: 1px solid var(--border-light);
+  border-radius: 6px;
+  transition: background 0.15s, padding-left 0.15s;
+}
+.osd-news-item:last-child { border-bottom: none; }
+.osd-news-item:hover {
+  background: rgba(62,51,44,0.04);
+  padding-left: 10px;
 }
 
-.osd-news-item:last-child { border-bottom: none; }
-
 .osd-news-tag {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   padding: 2px 7px;
   border-radius: 4px;
@@ -11241,7 +11318,7 @@ aside.side {
   color: var(--brown-dark);
   white-space: nowrap;
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .osd-news-title {
@@ -11254,35 +11331,49 @@ aside.side {
 
 .osd-news-date {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 /* ── 가족사 주요 인사이트 KPI 박스 ── */
 .osd-fin-kpi {
-  background: var(--bg-beige);
-  border-radius: 10px;
-  border: 1px solid var(--border-light);
-  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid var(--border-light);
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
   min-height: 0;
+  transition: background 0.15s;
+}
+.osd-fin-kpi:last-child {
+  border-right: none;
+}
+.osd-fin-kpi:hover {
+  background: rgba(62,51,44,0.03);
 }
 
 .osd-fin-kpi-label {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-muted);
   white-space: nowrap;
   letter-spacing: -0.01em;
+  padding: 3px 10px;
+  border-radius: 20px;
 }
+.osd-fin-kpi-label.operating { color: #1a5e35; background: rgba(26,94,53,0.1); }
+.osd-fin-kpi-label.net       { color: #1d4ed8; background: rgba(29,78,216,0.1); }
+.osd-fin-kpi-label.projects  { color: #b45309; background: rgba(180,83,9,0.1); }
+.osd-fin-kpi-label.overseas  { color: #6d28d9; background: rgba(109,40,217,0.1); }
 
 .osd-fin-kpi-val {
-  font-size: 28px;
+  font-size: 31px;
   font-weight: 900;
   color: var(--text-main);
   letter-spacing: -0.05em;
@@ -11294,7 +11385,7 @@ aside.side {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;
@@ -11302,7 +11393,7 @@ aside.side {
 
 .osd-fin-yoy {
   font-weight: 800;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .osd-fin-yoy.up { color: #1a5e35; }
@@ -11313,3 +11404,50 @@ aside.side {
   font-size: 14px;
   line-height: 1;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   OSD 비주얼 이펙트 & 애니메이션
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 경고 dot 펄스 애니메이션 */
+@keyframes osd-pulse-warn {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.55); }
+  50%       { box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+}
+.osd-alert-dot.warn {
+  animation: osd-pulse-warn 2.2s ease-in-out infinite;
+}
+
+/* Target vs Actual 배지 글로우 */
+@keyframes osd-badge-glow {
+  0%, 100% { box-shadow: 0 4px 14px rgba(62,51,44,0.35); }
+  50%       { box-shadow: 0 6px 30px rgba(26,94,53,0.55), 0 0 20px rgba(146,64,14,0.3); }
+}
+.osd-tvsa-badge {
+  animation: osd-badge-glow 3s ease-in-out infinite;
+}
+
+/* 탭 카드는 ::after 제외 (탭바가 상단을 채움) */
+.osd-insight-card--tabs::after {
+  display: none;
+}
+
+/* 전략 코멘트 p 호버 강조 */
+.osd-strategy-text p {
+  transition: background 0.15s, padding-left 0.15s;
+  border-radius: 0 4px 4px 0;
+  padding-left: 8px;
+}
+.osd-strategy-text p:hover {
+  background: rgba(62,51,44,0.03);
+  padding-left: 14px;
+}
+
+/* 주요 인사이트 b 태그 강조 */
+.osd-alert-item b {
+  color: var(--brown-main);
+  font-weight: 900;
+}
+.osd-alert-item.warn b { color: #b45309; }
+.osd-alert-item.info b { color: #1d4ed8; }
+.osd-alert-item.ok   b { color: #065f46; }
