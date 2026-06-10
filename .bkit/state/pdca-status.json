@@ -1,0 +1,373 @@
+{
+  "version": "3.0",
+  "lastUpdated": "2026-06-10T16:47:04.361Z",
+  "activeFeatures": [
+    "ordersSales",
+    "shareholdersGovernance",
+    "layout"
+  ],
+  "primaryFeature": "ordersSales",
+  "features": {
+    "ordersSales": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-06-10T15:31:12.163Z",
+        "lastUpdated": "2026-06-10T16:47:04.353Z"
+      },
+      "lastFile": "e:\\잡동사니\\잡동사니 선아\\HM_MIS-main - 복사본\\HM_MIS-main\\src\\components\\ordersSales\\OrdersSalesDashboard.tsx"
+    },
+    "shareholdersGovernance": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-06-10T15:33:09.930Z",
+        "lastUpdated": "2026-06-10T15:56:56.341Z"
+      },
+      "lastFile": "e:\\잡동사니\\잡동사니 선아\\HM_MIS-main - 복사본\\HM_MIS-main\\src\\components\\shareholdersGovernance\\TeamOverlay.tsx"
+    },
+    "layout": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-06-10T15:44:14.294Z",
+        "lastUpdated": "2026-06-10T15:44:23.313Z"
+      },
+      "lastFile": "e:\\잡동사니\\잡동사니 선아\\HM_MIS-main - 복사본\\HM_MIS-main\\src\\components\\layout\\AppHeader.tsx"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-06-09T06:06:44.741Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-06-10T16:47:04.361Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-10T15:31:12.169Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:33:09.937Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:33:30.511Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:40:58.448Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:41:21.962Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:41:34.035Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:41:43.425Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:41:56.728Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:42:17.212Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:44:14.299Z",
+      "feature": "layout",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:44:23.319Z",
+      "feature": "layout",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:51:19.364Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:51:29.054Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:51:37.779Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:53:58.403Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:54:07.565Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:54:15.575Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:54:27.320Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:54:58.023Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:55:16.115Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:55:25.555Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:55:37.446Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:55:52.060Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:56:11.357Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:56:28.195Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:56:41.421Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:56:48.660Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T15:56:56.346Z",
+      "feature": "shareholdersGovernance",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:01:22.198Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:05:39.202Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:05:46.649Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:06:06.393Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:06:20.328Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:06:36.442Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:17:19.752Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:19:43.316Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:25:46.952Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:26:09.167Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:26:20.972Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:26:31.339Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:26:41.464Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:27:07.486Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:27:18.472Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:32:31.054Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:32:42.160Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:32:58.795Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:33:09.431Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:34:25.806Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-06-10T16:47:04.360Z",
+      "feature": "ordersSales",
+      "phase": "do",
+      "action": "updated"
+    }
+  ],
+  "stateMachine": {
+    "defaultWorkflow": "default",
+    "activeWorkflows": {},
+    "totalTransitions": 0
+  },
+  "automation": {
+    "globalLevel": 2,
+    "trustScore": 40,
+    "pendingApprovals": 0,
+    "lastGateResult": null
+  },
+  "team": {
+    "enabled": true,
+    "stateFile": ".bkit/runtime/agent-state.json",
+    "eventsFile": ".bkit/runtime/agent-events.jsonl"
+  }
+}

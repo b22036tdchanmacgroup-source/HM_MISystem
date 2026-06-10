@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-06-10T15:34:54.569Z",
+  "reason": "compaction",
+  "status": {
+    "version": "3.0",
+    "lastUpdated": "2026-06-10T15:33:30.512Z",
+    "activeFeatures": [
+      "ordersSales",
+      "shareholdersGovernance"
+    ],
+    "primaryFeature": "ordersSales",
+    "features": {
+      "ordersSales": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-06-10T15:31:12.163Z",
+          "lastUpdated": "2026-06-10T15:31:12.163Z"
+        },
+        "lastFile": "e:\\잡동사니\\잡동사니 선아\\HM_MIS-main - 복사본\\HM_MIS-main\\src\\components\\ordersSales\\OrdersSalesDashboard.tsx"
+      },
+      "shareholdersGovernance": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-06-10T15:33:09.930Z",
+          "lastUpdated": "2026-06-10T15:33:30.505Z"
+        },
+        "lastFile": "e:\\잡동사니\\잡동사니 선아\\HM_MIS-main - 복사본\\HM_MIS-main\\src\\components\\shareholdersGovernance\\ShareholdersD3Chart.tsx"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-06-09T06:06:44.741Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-06-10T15:33:30.512Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-06-10T15:31:12.169Z",
+        "feature": "ordersSales",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-06-10T15:33:09.937Z",
+        "feature": "shareholdersGovernance",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-06-10T15:33:30.511Z",
+        "feature": "shareholdersGovernance",
+        "phase": "do",
+        "action": "updated"
+      }
+    ],
+    "stateMachine": {
+      "defaultWorkflow": "default",
+      "activeWorkflows": {},
+      "totalTransitions": 0
+    },
+    "automation": {
+      "globalLevel": 2,
+      "trustScore": 40,
+      "pendingApprovals": 0,
+      "lastGateResult": null
+    },
+    "team": {
+      "enabled": true,
+      "stateFile": ".bkit/runtime/agent-state.json",
+      "eventsFile": ".bkit/runtime/agent-events.jsonl"
+    }
+  }
+}
