@@ -17,13 +17,13 @@ interface CompanyData {
 const B = import.meta.env.BASE_URL;
 
 const COMPANIES_DATA: CompanyData[] = [
-  { id: 'hanmaek', name: '한맥기술', domain: 'ENG. Business',              logo: `${B}images/logo/Hanmac.svg`,    employees: 130, orders: { target: 800, actual: 620 }, sales: { target: 700, actual: 510 }, prevOrders: 580, prevSales: 470, color: '#1a5e35' },
-  { id: 'saman',   name: '삼안',     domain: 'ENG. Business',              logo: `${B}images/logo/Saman.svg`,     employees: 150, orders: { target: 700, actual: 520 }, sales: { target: 600, actual: 430 }, prevOrders: 490, prevSales: 400, color: '#0f766e' },
+  { id: 'hanmaek', name: '한맥기술', domain: 'ENG. Business',              logo: `${B}images/logo/Hanmac.svg`,    employees: 393, orders: { target: 800, actual: 620 }, sales: { target: 700, actual: 510 }, prevOrders: 580, prevSales: 470, color: '#1a5e35' },
+  { id: 'saman',   name: '삼안',     domain: 'ENG. Business',              logo: `${B}images/logo/Saman.svg`,     employees: 1976, orders: { target: 700, actual: 520 }, sales: { target: 600, actual: 430 }, prevOrders: 490, prevSales: 400, color: '#0f766e' },
   { id: 'jhind',   name: '장헌산업', domain: 'Manufacture & Construction', logo: `${B}images/logo/Jangheon.svg`,  employees: 35,  orders: { target: 400, actual: 280 }, sales: { target: 350, actual: 240 }, prevOrders: 260, prevSales: 210, color: '#b45309' },
   { id: 'jh',      name: '장헌',     domain: 'Manufacture & Construction', logo: `${B}images/logo/jangheon_1.svg`,employees: 20,  orders: { target: 200, actual: 160 }, sales: { target: 180, actual: 135 }, prevOrders: 145, prevSales: 120, color: '#a16207' },
-  { id: 'ptc',     name: '피티씨',   domain: 'Manufacture & Construction', logo: `${B}images/logo/PTC.svg`,       employees: 25,  orders: { target: 150, actual: 110 }, sales: { target: 140, actual: 105 }, prevOrders: 95,  prevSales: 88,  color: '#9a3412' },
-  { id: 'halla',   name: '한라',     domain: 'Environment EPC & Plant',    logo: `${B}images/logo/Halla.svg`,     employees: 30,  orders: { target: 150, actual: 95  }, sales: { target: 130, actual: 85  }, prevOrders: 80,  prevSales: 72,  color: '#065f46' },
-  { id: 'baron',   name: '바론',     domain: 'IT Business',                logo: `${B}images/logo/Baron.svg`,     employees: 15,  orders: { target: 100, actual: 65  }, sales: { target: 100, actual: 75  }, prevOrders: 55,  prevSales: 62,  color: '#1d4ed8' },
+  { id: 'ptc',     name: '피티씨',   domain: 'Manufacture & Construction', logo: `${B}images/logo/PTC.svg`,       employees: 26,  orders: { target: 150, actual: 110 }, sales: { target: 140, actual: 105 }, prevOrders: 95,  prevSales: 88,  color: '#9a3412' },
+  { id: 'halla',   name: '한라',     domain: 'Environment EPC & Plant',    logo: `${B}images/logo/Halla.svg`,     employees: 222,  orders: { target: 150, actual: 95  }, sales: { target: 130, actual: 85  }, prevOrders: 80,  prevSales: 72,  color: '#065f46' },
+  { id: 'baron',   name: '바론',     domain: 'IT Business',                logo: `${B}images/logo/Baron.svg`,     employees: 182,  orders: { target: 100, actual: 65  }, sales: { target: 100, actual: 75  }, prevOrders: 55,  prevSales: 62,  color: '#1d4ed8' },
 ];
 
 const GROUP = {
@@ -89,8 +89,8 @@ const DonutChart: React.FC<{ title: string; slices: DonutSlice[]; totalLabel: st
                 );
               })}
               <circle cx="50" cy="50" r={30} fill="#fff" />
-              <text x="50" y="44" textAnchor="middle" fontSize="6.5" fill="#8e8780" fontWeight="600">{totalLabel}</text>
-              <text x="50" y="57" textAnchor="middle" fontSize="10"  fill="#1e1b18" fontWeight="800">{totalValue}</text>
+              <text x="50" y="43" textAnchor="middle" fontSize="7.5" fill="#8e8780" fontWeight="700">{totalLabel}</text>
+              <text x="50" y="58" textAnchor="middle" fontSize="12"  fill="#1e1b18" fontWeight="850">{totalValue}</text>
             </svg>
           </div>
           <div className="osd-donut-legend">
@@ -168,7 +168,124 @@ export const OrdersSalesDashboard: React.FC = () => {
   return (
     <div className="osd-page">
 
-      {/* ── 1행: 총괄 요약 ── */}
+      {/* ── 1행: 신규 KPI 탑 요약 ── */}
+      <div className="osd-row-kpi-top">
+        {/* Card 1: 수주잔고 */}
+        <div className="osd-top-kpi-card card-backlog">
+          <div className="osd-top-kpi-circle orange">
+            {/* 수주잔고: 크레인/건설현장 아이콘 */}
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+              <rect x="20" y="28" width="6" height="16" rx="2" fill="#92400e" opacity="0.9"/>
+              <rect x="14" y="25" width="18" height="5" rx="2" fill="#92400e"/>
+              <rect x="6" y="10" width="4" height="34" rx="2" fill="#b45309"/>
+              <rect x="6" y="10" width="28" height="4" rx="2" fill="#b45309"/>
+              <line x1="34" y1="12" x2="23" y2="25" stroke="#92400e" strokeWidth="2.5" strokeLinecap="round"/>
+              <circle cx="34" cy="10" r="4" fill="#d97706"/>
+              <rect x="4" y="42" width="40" height="4" rx="2" fill="#78350f"/>
+              <rect x="10" y="30" width="4" height="12" rx="1" fill="#92400e" opacity="0.5"/>
+              <rect x="32" y="30" width="4" height="12" rx="1" fill="#92400e" opacity="0.5"/>
+            </svg>
+          </div>
+          <div className="osd-top-kpi-right">
+            <span className="osd-top-kpi-label-new">수주잔고</span>
+            <div className="osd-top-kpi-main-new">
+              <span className="num orange">{(2300 + GROUP.orders.actual - GROUP.sales.actual).toLocaleString()}</span>
+              <span className="unit">억</span>
+              <span className="sub-val-new up">▲ 4.8%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 2: 인당 생산성 */}
+        <div className="osd-top-kpi-card card-productivity">
+          <div className="osd-top-kpi-circle green">
+            {/* 인당생산성: 인력/팀 헬멧 아이콘 */}
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+              <circle cx="24" cy="13" r="7" fill="#1a5e35" opacity="0.85"/>
+              <path d="M10 38c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#1a5e35" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              {/* 헬멧 */}
+              <path d="M15 15 Q15 8 24 8 Q33 8 33 15" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" fill="rgba(34,197,94,0.12)"/>
+              <rect x="13" y="15" width="22" height="3" rx="1.5" fill="#22c55e" opacity="0.7"/>
+              {/* 인원수 배지 */}
+              <circle cx="36" cy="10" r="7" fill="#14532d"/>
+              <text x="36" y="14" textAnchor="middle" fontSize="7" fill="white" fontWeight="bold">{GROUP.employees}</text>
+            </svg>
+          </div>
+          <div className="osd-top-kpi-right">
+            <span className="osd-top-kpi-label-new">인당 생산성 <span className="sub-desc-new">({GROUP.employees}명 기준)</span></span>
+            <div className="osd-top-kpi-split-new">
+              <div className="split-item-new">
+                <span className="split-lbl orders">수주</span>
+                <span className="split-val orders">{groupPerOrder.toFixed(2)}억</span>
+              </div>
+              <div className="split-div-new" />
+              <div className="split-item-new">
+                <span className="split-lbl sales">매출</span>
+                <span className="split-val sales">{groupPerSales.toFixed(2)}억</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: 연말 수주/매출 달성률(예상) */}
+        <div className="osd-top-kpi-card card-achievement">
+          <div className="osd-top-kpi-circle blue">
+            {/* 달성률: 계기판/게이지 아이콘 */}
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+              <path d="M8 30 A16 16 0 0 1 40 30" stroke="#e2e8f0" strokeWidth="5" strokeLinecap="round" fill="none"/>
+              <path d="M8 30 A16 16 0 0 1 37.5 21" stroke="#1565c0" strokeWidth="5" strokeLinecap="round" fill="none"/>
+              <circle cx="24" cy="30" r="3" fill="#1565c0"/>
+              <line x1="24" y1="30" x2="30" y2="18" stroke="#1565c0" strokeWidth="2" strokeLinecap="round"/>
+              <text x="24" y="42" textAnchor="middle" fontSize="8" fill="#1565c0" fontWeight="bold">98%</text>
+              <circle cx="12" cy="30" r="2" fill="#93c5fd"/>
+              <circle cx="36" cy="30" r="2" fill="#93c5fd"/>
+              <circle cx="9" cy="22" r="2" fill="#bfdbfe"/>
+              <circle cx="39" cy="22" r="2" fill="#bfdbfe"/>
+            </svg>
+          </div>
+          <div className="osd-top-kpi-right">
+            <span className="osd-top-kpi-label-new">연말 수주/매출 달성률(예상)</span>
+            <div className="osd-top-kpi-split-new">
+              <div className="split-item-new">
+                <span className="split-lbl orders">수주</span>
+                <span className="split-val rate orders">98.2%</span>
+              </div>
+              <div className="split-div-new" />
+              <div className="split-item-new">
+                <span className="split-lbl sales">매출</span>
+                <span className="split-val rate sales">96.5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: 가족사 신규 수주 */}
+        <div className="osd-top-kpi-card card-neworders">
+          <div className="osd-top-kpi-circle green">
+            {/* 신규수주: 계약서/핸드셰이크 아이콘 */}
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+              {/* 계약서 */}
+              <rect x="10" y="6" width="22" height="28" rx="3" fill="#dcfce7" stroke="#1a5e35" strokeWidth="1.5"/>
+              <line x1="15" y1="14" x2="27" y2="14" stroke="#1a5e35" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="15" y1="19" x2="27" y2="19" stroke="#1a5e35" strokeWidth="2" strokeLinecap="round"/>
+              <line x1="15" y1="24" x2="22" y2="24" stroke="#1a5e35" strokeWidth="2" strokeLinecap="round"/>
+              {/* 도장/체크 */}
+              <circle cx="34" cy="34" r="10" fill="#14532d"/>
+              <path d="M29 34 L32 37 L39 30" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div className="osd-top-kpi-right">
+            <span className="osd-top-kpi-label-new">가족사 신규 수주</span>
+            <div className="osd-top-kpi-main-new">
+              <span className="num green">{GROUP.orders.actual.toLocaleString()}</span>
+              <span className="unit">억</span>
+              <span className="sub-val-new rate green">{Math.round((GROUP.orders.actual / GROUP.orders.target) * 100)}% 달성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── 2행: 총괄 요약 ── */}
       <div className="osd-row-summary">
         <DonutChart title="가족사 수주 기여도" slices={orderSlices} totalLabel="실적 합계" totalValue={`${GROUP.orders.actual.toLocaleString()}억`} />
         <div className="osd-summary-center">
@@ -179,7 +296,7 @@ export const OrdersSalesDashboard: React.FC = () => {
         <DonutChart title="가족사 매출 기여도" slices={salesSlices} totalLabel="실적 합계" totalValue={`${GROUP.sales.actual.toLocaleString()}억`} />
       </div>
 
-      {/* ── 2행: 도메인 & 가족사 카드 ── */}
+      {/* ── 3행: 도메인 & 가족사 카드 ── */}
       <div className="osd-row-companies">
         <div className="osd-domain-header-row">
           {DOMAINS.map((dom, i) => (
@@ -209,14 +326,13 @@ export const OrdersSalesDashboard: React.FC = () => {
                 {/* 수주 */}
                 <div className="osd-cc-metric">
                   <div className="osd-cc-metric-header">
-                    <span className="osd-cc-metric-label orders">수주 실적</span>
+                    <span className="osd-cc-metric-label orders">수주</span>
                     <span className="osd-cc-metric-rate orders">{oa.toFixed(1)}%</span>
                   </div>
                   <div className="osd-cc-nums">
                     <span className="osd-cc-num-lbl">목표</span>
                     <span className="osd-cc-num">{comp.orders.target}억</span>
-                    <span className="osd-cc-num-lbl" style={{ marginLeft: 6 }}>실적</span>
-                    <span className="osd-cc-num bold">{comp.orders.actual}억</span>
+                    <span className="osd-cc-num bold" style={{ marginLeft: 8 }}>{comp.orders.actual}억</span>
                   </div>
                   <div className="osd-cc-bar-track">
                     <div className="osd-cc-bar-fill" style={{ width: `${Math.min(oa, 100)}%`, background: `linear-gradient(90deg, ${comp.color}44 0%, ${comp.color} 100%)` }} />
@@ -230,14 +346,13 @@ export const OrdersSalesDashboard: React.FC = () => {
                 {/* 매출 */}
                 <div className="osd-cc-metric">
                   <div className="osd-cc-metric-header">
-                    <span className="osd-cc-metric-label sales">매출 실적</span>
+                    <span className="osd-cc-metric-label sales">매출</span>
                     <span className="osd-cc-metric-rate sales">{sa.toFixed(1)}%</span>
                   </div>
                   <div className="osd-cc-nums">
                     <span className="osd-cc-num-lbl">목표</span>
                     <span className="osd-cc-num">{comp.sales.target}억</span>
-                    <span className="osd-cc-num-lbl" style={{ marginLeft: 6 }}>실적</span>
-                    <span className="osd-cc-num bold">{comp.sales.actual}억</span>
+                    <span className="osd-cc-num bold" style={{ marginLeft: 8 }}>{comp.sales.actual}억</span>
                   </div>
                   <div className="osd-cc-bar-track">
                     <div className="osd-cc-bar-fill" style={{ width: `${Math.min(sa, 100)}%`, background: `linear-gradient(90deg, ${comp.color}88 0%, ${comp.color}dd 100%)` }} />
@@ -251,31 +366,6 @@ export const OrdersSalesDashboard: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* ── 3행: 인당 생산성 ── */}
-      <div className="osd-row-percap">
-        <div className="osd-percap-panel">
-          <div className="osd-percap-hdr"><span>가족사별 인당 수주 / 매출 (억원)</span></div>
-          <div className="osd-percap-list">
-            <div className="osd-percap-item total">
-              <div className="osd-percap-item-top">
-                <span className="osd-percap-item-name">전체</span>
-                <span className="osd-percap-item-emp">{GROUP.employees}명</span>
-              </div>
-              <span className="osd-percap-item-vals">{groupPerOrder.toFixed(2)} / {groupPerSales.toFixed(2)}</span>
-            </div>
-            {COMPANIES_DATA.map(c => (
-              <div key={c.id} className="osd-percap-item">
-                <div className="osd-percap-item-top">
-                  <span className="osd-percap-item-name">{c.name}</span>
-                  <span className="osd-percap-item-emp">{c.employees}명</span>
-                </div>
-                <span className="osd-percap-item-vals">{(c.orders.actual / c.employees).toFixed(2)} / {(c.sales.actual / c.employees).toFixed(2)}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -359,13 +449,30 @@ export const OrdersSalesDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* 전략 코멘트 */}
-        <div className="osd-insight-card">
-          <div className="osd-insight-hdr"><span>전략 코멘트</span></div>
-          <div className="osd-insight-body osd-strategy-text">
-            <p><b>ENG</b> 공공 발주 선점 성공 → 하반기 민간 수주 강화 및 대형 컨소시엄 전략 수립이 필요합니다.</p>
-            <p><b>M&amp;C</b> 건자재 단가 상승 대응 → 자재 공동 조달 플랫폼 가동, 원가율 관리가 시급합니다.</p>
-            <p><b>IT(바론)</b> SI 외주 → 클라우드·자체 솔루션 라이선스 매출 전환으로 중장기 이익 향상을 추진합니다.</p>
+        {/* 운영전략 코멘트 */}
+        <div className="osd-insight-card osd-insight-card--strategy">
+          <div className="osd-insight-hdr"><span>운영전략 코멘트</span></div>
+          <div className="osd-insight-body">
+            <div className="osd-alert-item info">
+              <span className="osd-alert-dot info" />
+              <span><b>ENG</b> 공공발주 선점 완료 → 하반기 대형 민간 컨소시엄 신규 진입 추진</span>
+            </div>
+            <div className="osd-alert-item warn">
+              <span className="osd-alert-dot warn" />
+              <span><b>M&amp;C</b> 건자재 단가 상승 대응 → 공동조달 플랫폼 4Q 가동, 원가율 -5%p 목표</span>
+            </div>
+            <div className="osd-alert-item ok">
+              <span className="osd-alert-dot ok" />
+              <span><b>환경 EPC</b> 하수처리 현대화 통합사업 우선협상 진입 → 매출 안정화 기대</span>
+            </div>
+            <div className="osd-alert-item info">
+              <span className="osd-alert-dot info" />
+              <span><b>IT(바론)</b> SI 외주 의존 축소 → 클라우드 라이선스 매출 20%p 전환 추진</span>
+            </div>
+            <div className="osd-alert-item ok">
+              <span className="osd-alert-dot ok" />
+              <span><b>해외</b> 동남아 3개국 MOU 활용 → 친환경자재 수출 조기 계약 체결 목표</span>
+            </div>
           </div>
         </div>
 

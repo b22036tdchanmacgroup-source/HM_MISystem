@@ -1745,7 +1745,7 @@ body::-webkit-scrollbar,
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 10px 18px 20px;
+  padding: 10px 18px 14px;
   gap: 8px;
 }
 
@@ -1797,35 +1797,35 @@ body::-webkit-scrollbar,
   overflow: hidden;
 }
 
-/* ── 회사 카드: 지배구조 패널 스타일 매칭 ── */
+/* ── 회사 카드: 밝고 선명한 스타일 ── */
 .sh-company-card {
-  background: #f4f1ea;
-  border: 1.5px solid var(--border-light, #e5e2db);
-  border-top: 3.5px solid var(--card-color, #aaa);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-top: 4px solid var(--card-color, #aaa);
   border-radius: 10px;
   overflow: hidden;
-  transition: opacity 0.2s, box-shadow 0.22s;
+  transition: opacity 0.2s, box-shadow 0.22s, transform 0.15s;
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .sh-company-card.active {
-  box-shadow: 0 0 0 2px var(--card-color, #aaa), 0 4px 14px rgba(0,0,0,0.13);
-  border-top-width: 4.5px;
+  box-shadow: 0 0 0 2.5px var(--card-color, #aaa), 0 4px 16px rgba(0,0,0,0.15);
+  border-top-width: 5px;
 }
 
 .sh-company-card.dimmed {
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
-/* ── 카드 헤더: 로고 + 회사명 (중앙 정렬) ── */
+/* ── 카드 헤더: 로고 + 회사명 (카드 색상 연동 밝은 톤) ── */
 .sh-card-header {
   padding: 7px 8px 6px;
-  background: #ede9e4;
-  border-bottom: 1px solid #dedad2;
+  background: color-mix(in srgb, var(--card-color, #888) 10%, #f0f4ff);
+  border-bottom: 1px solid color-mix(in srgb, var(--card-color, #888) 20%, #e0e7ff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1848,7 +1848,7 @@ body::-webkit-scrollbar,
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
   color: white;
   flex-shrink: 0;
@@ -1856,7 +1856,7 @@ body::-webkit-scrollbar,
 }
 
 .sh-card-name {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--card-color, #3e332c);
   letter-spacing: -0.03em;
@@ -1891,17 +1891,17 @@ body::-webkit-scrollbar,
 
 /* 법인: 파란 텍스트 및 배경 / 개인: 딥그린 텍스트 및 연한 민트 배경 */
 .sh-row-corp {
-  background-color: rgba(40, 69, 160, 0.045);
+  background-color: rgba(40, 69, 160, 0.07);
 }
-.sh-row-corp .sh-td-name { color: #2845a0; font-weight: 750; }
+.sh-row-corp .sh-td-name { color: #1e3a8a; font-weight: 750; }
 
 .sh-row-ind {
-  background-color: rgba(15, 104, 72, 0.07);
+  background-color: rgba(15, 104, 72, 0.10);
 }
-.sh-row-ind  .sh-td-name { color: #0f6848; font-weight: 750; }
+.sh-row-ind  .sh-td-name { color: #065f46; font-weight: 750; }
 
 .sh-td-name {
-  font-size: 15.5px;
+  font-size: 14px;
   font-weight: 750;
   color: #2c3a30;
   overflow: hidden;
@@ -1911,7 +1911,7 @@ body::-webkit-scrollbar,
 }
 
 .sh-td-pct {
-  font-size: 15.5px;
+  font-size: 14px;
   font-weight: 900;
   color: var(--brown-dark, #3e332c);
   text-align: right;
@@ -1930,22 +1930,22 @@ body::-webkit-scrollbar,
   justify-content: space-between;
   align-items: center;
   padding: 4px 8px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   border-bottom: 1.5px solid #dedad2;
   letter-spacing: -0.01em;
 }
 
 .sh-card-group-header.corp {
-  background: rgba(40, 69, 160, 0.08);
-  color: #2845a0;
-  border-bottom-color: rgba(40, 69, 160, 0.2);
+  background: rgba(40, 69, 160, 0.13);
+  color: #1e3a8a;
+  border-bottom-color: rgba(40, 69, 160, 0.28);
 }
 
 .sh-card-group-header.ind {
-  background: rgba(15, 104, 72, 0.08);
-  color: #0f6848;
-  border-bottom-color: rgba(15, 104, 72, 0.2);
+  background: rgba(15, 104, 72, 0.13);
+  color: #065f46;
+  border-bottom-color: rgba(15, 104, 72, 0.28);
 }
 
 .sh-total-label {
@@ -8983,7 +8983,6 @@ aside.side {
 .sh-list-body {
   flex: 1;
   overflow-y: auto;
-  max-height: 235px;
   scrollbar-width: thin;
 }
 
@@ -9156,7 +9155,9 @@ aside.side {
   display: grid !important;
   grid-template-columns: repeat(5, 1fr) !important;
   gap: 10px !important;
-  padding: 4px 6px 12px !important;
+  padding: 10px !important;
+  background: linear-gradient(155deg, #eef2ff 0%, #f8fafc 40%, #ecfdf5 100%) !important;
+  border-radius: 12px !important;
 }
 
 /* 테이블 두 줄 사이의 간격 복원 (개별 주주 행) */
@@ -9167,10 +9168,10 @@ aside.side {
 /* 지배구조 D3 차트 노드 마우스오버 시 우측 주주 카드 하이라이트 연동 (짤림 방지 최적화) */
 .sh-company-card.hovered {
   border-color: var(--card-color) !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06), 0 0 12px var(--card-color);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10), 0 0 14px color-mix(in srgb, var(--card-color) 40%, transparent) !important;
   transform: translateY(-3px) scale(1.01) !important;
   z-index: 10;
-  background: #fffdfa !important;
+  background: color-mix(in srgb, var(--card-color, #888) 5%, #ffffff) !important;
 }
 
 /* ─── 가족사 규모 트리맵 화면 (ScaleTreeMap) ─── */
@@ -10455,20 +10456,334 @@ aside.side {
   background: var(--bg-beige);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 10px 18px 10px;
+  gap: 8px;
+  padding: 4px 18px 10px;
   overflow: hidden;
   box-sizing: border-box;
   word-break: keep-all;
 }
 
-/* ── 1행: 총괄 요약 ── */
+/* ── 1행: 신규 KPI 탑 요약 ── */
+.osd-row-kpi-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  flex: 0 0 auto;
+  min-height: 110px;
+}
+
+.osd-top-kpi-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-light);
+  box-shadow: none;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.osd-top-kpi-card:last-child {
+  border-right: none;
+}
+
+.osd-top-kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.osd-top-kpi-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  font-size: 34px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+}
+.osd-top-kpi-circle.orange {
+  background: rgba(146, 64, 14, 0.10);
+  border: 2px solid rgba(146, 64, 14, 0.28);
+  box-shadow: 0 4px 14px rgba(146, 64, 14, 0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  color: #92400e;
+}
+.osd-top-kpi-circle.green {
+  background: rgba(26, 94, 53, 0.10);
+  border: 2px solid rgba(26, 94, 53, 0.28);
+  box-shadow: 0 4px 14px rgba(26, 94, 53, 0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  color: #1a5e35;
+}
+.osd-top-kpi-circle.blue {
+  background: rgba(21, 101, 192, 0.10);
+  border: 2px solid rgba(21, 101, 192, 0.28);
+  box-shadow: 0 4px 14px rgba(21, 101, 192, 0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+  color: #1565c0;
+}
+
+.osd-top-kpi-right {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.osd-top-kpi-label-new {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.sub-desc-new {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
+.osd-top-kpi-main-new {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.osd-top-kpi-main-new .num {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.osd-top-kpi-main-new .num.green { color: #1a5e35; }
+.osd-top-kpi-main-new .num.orange { color: #92400e; }
+
+.osd-top-kpi-main-new .unit {
+  font-size: 22px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.sub-val-new {
+  font-size: 14px;
+  font-weight: 700;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.sub-val-new.up {
+  color: #1a5e35;
+  background: rgba(26, 94, 53, 0.08);
+}
+.sub-val-new.rate.green {
+  color: #1a5e35;
+  background: rgba(26, 94, 53, 0.08);
+}
+
+.osd-top-kpi-split-new {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.split-item-new {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.split-lbl {
+  font-size: 13px;
+  font-weight: 700;
+}
+.split-lbl.orders { color: #1a5e35; }
+.split-lbl.sales { color: #92400e; }
+
+.split-val {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.split-val.orders { color: #1a5e35; }
+.split-val.sales { color: #92400e; }
+.split-val.rate.orders { color: #1a5e35; }
+.split-val.rate.sales { color: #92400e; }
+
+.split-div-new {
+  width: 1px;
+  height: 16px;
+  background: var(--border-light);
+}
+
+.osd-top-kpi-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.osd-top-kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.osd-top-kpi-icon.green  { background: rgba(26, 94, 53, 0.1); color: #1a5e35; }
+.osd-top-kpi-icon.orange { background: rgba(146, 64, 14, 0.1); color: #92400e; }
+.osd-top-kpi-icon.blue   { background: rgba(21, 101, 192, 0.1); color: #1565c0; }
+
+.osd-top-kpi-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--brown-dark);
+  letter-spacing: -0.02em;
+}
+
+.osd-top-kpi-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  margin-top: 6px;
+}
+
+.osd-top-kpi-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.osd-top-kpi-main .num {
+  font-size: 42px;
+  font-weight: 850;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.osd-top-kpi-main .num.green { color: #1a5e35; }
+.osd-top-kpi-main .num.orange { color: #92400e; }
+
+.osd-top-kpi-main .unit {
+  font-size: 20px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.osd-top-kpi-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.osd-top-kpi-sub.center {
+  justify-content: center;
+}
+
+.osd-top-kpi-sub .sub-label {
+  color: var(--text-muted);
+}
+
+.osd-top-kpi-sub .sub-val.up {
+  color: #1a5e35;
+  font-weight: 700;
+}
+.osd-top-kpi-sub .sub-val.dn {
+  color: #b91c1c;
+  font-weight: 700;
+}
+.osd-top-kpi-sub .sub-val.rate {
+  font-weight: 700;
+}
+.osd-top-kpi-sub .sub-val.rate.green {
+  color: #1a5e35;
+}
+
+.osd-top-kpi-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.split-item {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+}
+
+.split-label {
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.split-label.orders { color: #1a5e35; }
+.split-label.sales { color: #92400e; }
+
+.split-num {
+  font-size: 30px;
+  font-weight: 850;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+.split-num.rate {
+  font-size: 32px;
+}
+.split-num.orders { color: #1a5e35; }
+.split-num.sales { color: #92400e; }
+
+.split-border {
+  width: 1.5px;
+  height: 36px;
+  background: var(--border-light);
+  margin: 0 12px;
+}
+
+.osd-top-kpi-bar-mini {
+  margin-top: 8px;
+  height: 8px;
+  background: var(--border-light);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.mini-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.mini-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+.mini-fill.orders {
+  background: #1a5e35;
+}
+.mini-fill.sales {
+  background: #92400e;
+  opacity: 0.8;
+  margin-left: 2px;
+}
+
+
+/* ── 2행: 총괄 요약 ── */
 .osd-row-summary {
   display: grid;
   grid-template-columns: 1fr 2.6fr 1fr;
   gap: 10px;
-  flex: 0 0 27%;
-  min-height: 0;
+  flex: 1.8;
+  min-height: 180px;
 }
 
 .osd-donut-card {
@@ -10553,7 +10868,7 @@ aside.side {
 }
 
 .osd-legend-name {
-  font-size: 17px;
+  font-size: 19px;
   color: var(--brown-dark);
   flex: 1;
   white-space: nowrap;
@@ -10563,7 +10878,7 @@ aside.side {
 }
 
 .osd-legend-pct {
-  font-size: 17px;
+  font-size: 19px;
   color: var(--brown-main);
   font-weight: 700;
   white-space: nowrap;
@@ -10710,8 +11025,8 @@ aside.side {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 116px;
-  height: 116px;
+  width: 136px;
+  height: 136px;
   background: linear-gradient(135deg, #1a5e35, #92400e);
   border-radius: 50%;
   align-self: center;
@@ -10720,21 +11035,21 @@ aside.side {
 }
 
 .osd-tvsa-text {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 800;
   color: #fff;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.4;
   letter-spacing: 0.01em;
 }
 
-/* ── 2행: 계열사 카드 ── */
+/* ── 3행: 계열사 카드 ── */
 .osd-row-companies {
   display: flex;
   flex-direction: column;
   gap: 0;
-  flex: 0 0 33%;
-  min-height: 0;
+  flex: 2;
+  min-height: 160px;
 }
 
 .osd-domain-header-row {
@@ -11061,8 +11376,8 @@ aside.side {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
-  flex: 1;
-  min-height: 0;
+  flex: 1.3;
+  min-height: 120px;
 }
 
 .osd-insight-card {
@@ -11104,7 +11419,6 @@ aside.side {
   color: var(--brown-dark);
   padding-bottom: 8px;
   padding-left: 12px;
-  border-bottom: 1px solid var(--border-light);
   flex-shrink: 0;
   position: relative;
   white-space: nowrap;
@@ -11144,7 +11458,6 @@ aside.side {
   color: var(--brown-dark);
   line-height: 1.7;
   padding: 8px 8px;
-  border-bottom: 1px solid var(--border-light);
   border-radius: 4px;
   transition: background 0.15s;
 }
@@ -11203,17 +11516,39 @@ aside.side {
 .osd-insight-kpi-val  { font-size: 34px; font-weight: 900; color: var(--text-main); letter-spacing: -0.05em; white-space: nowrap; }
 .osd-insight-kpi-label { font-size: 13px; color: var(--text-muted); font-weight: 600; text-align: center; white-space: nowrap; }
 
-/* 전략 코멘트 */
-.osd-strategy-text p {
+/* 운영전략 코멘트 불릿 리스트 */
+.osd-strategy-list {
+  list-style: none;
+  padding: 0;
   margin: 0;
-  font-size: 16px;
-  color: var(--brown-dark);
-  line-height: 1.7;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.osd-strategy-text p:last-child { border-bottom: none; }
+.osd-strategy-list li {
+  position: relative;
+  font-size: 14px;
+  color: var(--brown-dark);
+  line-height: 1.6;
+  padding: 6px 8px 6px 22px;
+  border-radius: 4px;
+  transition: background 0.15s, padding-left 0.15s;
+}
+
+.osd-strategy-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.osd-strategy-list li:hover {
+  background: rgba(62, 51, 44, 0.04);
+  padding-left: 26px;
+}
 
 /* ── 인사이트 카드 탭 ── */
 .osd-insight-card--tabs {
@@ -11225,7 +11560,6 @@ aside.side {
 .osd-insight-tabs {
   display: flex;
   flex-shrink: 0;
-  border-bottom: 1px solid var(--border-light);
   background: linear-gradient(to bottom, #faf9f7 0%, #fff 100%);
 }
 
@@ -11342,12 +11676,12 @@ aside.side {
   border: none;
   border-radius: 0;
   border-right: 1px solid var(--border-light);
-  padding: 10px 16px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 16px;
   min-height: 0;
   transition: background 0.15s;
 }
@@ -11432,15 +11766,13 @@ aside.side {
   display: none;
 }
 
-/* 전략 코멘트 p 호버 강조 */
-.osd-strategy-text p {
-  transition: background 0.15s, padding-left 0.15s;
-  border-radius: 0 4px 4px 0;
-  padding-left: 8px;
+/* 운영전략 코멘트 — 탭 카드 첫줄과 높이 맞춤 */
+.osd-insight-card--strategy {
+  padding-top: 12px;
+  gap: 6px;
 }
-.osd-strategy-text p:hover {
-  background: rgba(62,51,44,0.03);
-  padding-left: 14px;
+.osd-insight-card--strategy .osd-insight-hdr {
+  padding-bottom: 0;
 }
 
 /* 주요 인사이트 b 태그 강조 */

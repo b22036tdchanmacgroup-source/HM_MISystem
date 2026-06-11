@@ -31,23 +31,23 @@ interface ScaleCompany {
 }
 
 const SCALE_COMPANIES_ROW1: ScaleCompany[] = [
-  { id: 'baron', name: 'A사', value: 1250000, pct: '32.1', unlistedVal: 12500, shares: 100000, pricePerShare: 125000, borderColor: '#2845a0', titleColor: '#2845a0' },
-  { id: 'ptc', name: 'B사', value: 850000, pct: '21.8', unlistedVal: 8500, shares: 100000, pricePerShare: 85000, borderColor: '#c62828', titleColor: '#c62828' },
-  { id: 'hanmaek', name: 'C사', value: 500000, pct: '12.8', unlistedVal: 5000, shares: 100000, pricePerShare: 50000, borderColor: '#29b6f6', titleColor: '#0288d1' }
+  { id: 'saman', name: '삼안', value: 127125, pct: '51.4', unlistedVal: 212304, shares: 598789, pricePerShare: 212304, borderColor: '#ffb300', titleColor: '#ff8f00' },
+  { id: 'hanmaek', name: '한맥기술', value: 56638, pct: '22.9', unlistedVal: 288967, shares: 196000, pricePerShare: 288967, borderColor: '#c62828', titleColor: '#c62828' },
+  { id: 'jp', name: '장헌파트너스', value: 46221, pct: '18.7', unlistedVal: 177774, shares: 260000, pricePerShare: 177774, borderColor: '#7c4dff', titleColor: '#5e35b1' }
 ];
 
 const SCALE_COMPANIES_ROW2: ScaleCompany[] = [
-  { id: 'jp', name: 'D사', value: 350000, pct: '9.0', unlistedVal: 3500, shares: 100000, pricePerShare: 35000, borderColor: '#7c4dff', titleColor: '#5e35b1' },
-  { id: 'saman', name: 'F사', value: 220000, pct: '5.6', unlistedVal: 2200, shares: 100000, pricePerShare: 22000, borderColor: '#ffb300', titleColor: '#ff8f00' },
-  { id: 'open', name: 'E사', value: 150000, pct: '3.8', unlistedVal: 1500, shares: 100000, pricePerShare: 15000, borderColor: '#03a9f4', titleColor: '#0288d1' },
-  { id: 'jhind', name: 'G사', value: 110000, pct: '2.8', unlistedVal: 1100, shares: 100000, pricePerShare: 11000, borderColor: '#a1887b', titleColor: '#6d4c41' }
+  { id: 'halla', name: '한라', value: 13261, pct: '5.4', unlistedVal: 1010, shares: 13130120, pricePerShare: 1010, borderColor: '#4caf50', titleColor: '#388e3c' },
+  { id: 'ptc', name: '피티씨', value: 3681, pct: '1.5', unlistedVal: 122707, shares: 30000, pricePerShare: 122707, borderColor: '#2845a0', titleColor: '#2845a0' },
+  { id: 'jhind', name: '장헌산업', value: 0, pct: '0.0', unlistedVal: 0, shares: 260000, pricePerShare: 0, borderColor: '#a1887b', titleColor: '#6d4c41' },
+  { id: 'jh', name: '장헌', value: 0, pct: '0.0', unlistedVal: 0, shares: 190000, pricePerShare: 0, borderColor: '#9c27b0', titleColor: '#7b1fa2' }
 ];
 
 const SCALE_COMPANIES_ROW3: ScaleCompany[] = [
-  { id: 'open_end', name: 'OPEN END', value: 60000, pct: '1.5', unlistedVal: 600, shares: 100000, pricePerShare: 6000, borderColor: '#e91e63', titleColor: '#c2185b' },
-  { id: 'jh', name: 'I사', value: 45000, pct: '1.2', unlistedVal: 450, shares: 100000, pricePerShare: 4500, borderColor: '#9c27b0', titleColor: '#7b1fa2' },
-  { id: 'halla', name: 'H사', value: 30000, pct: '0.8', unlistedVal: 300, shares: 100000, pricePerShare: 3000, borderColor: '#4caf50', titleColor: '#388e3c' },
-  { id: 'hyunta', name: 'J사', value: 25000, pct: '0.6', unlistedVal: 250, shares: 100000, pricePerShare: 2500, borderColor: '#009688', titleColor: '#00796b' }
+  { id: 'baron', name: '바론', value: 304, pct: '0.1', unlistedVal: 15178, shares: 20000, pricePerShare: 15178, borderColor: '#29b6f6', titleColor: '#0288d1' },
+  { id: 'sanha', name: '산하종합기술', value: 0, pct: '0.0', unlistedVal: 0, shares: 100000, pricePerShare: 0, borderColor: '#009688', titleColor: '#00796b' },
+  { id: 'hyunta', name: '현타', value: 0, pct: '0.0', unlistedVal: 0, shares: 60000, pricePerShare: 0, borderColor: '#1f1f1f', titleColor: '#1f1f1f' },
+  { id: 'open', name: '오픈엔드', value: 0, pct: '0.0', unlistedVal: 0, shares: 10000, pricePerShare: 0, borderColor: '#888888', titleColor: '#888888' }
 ];
 
 const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
@@ -108,8 +108,8 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
       .filter(s => s.type === '개인')
       .reduce((sum, s) => sum + parseFloat(s.pct), 0);
 
-    corpSharesTotalStr = `${corpSharesSum.toLocaleString()}주 (${corpPctSum.toFixed(1)}%)`;
-    indSharesTotalStr = `${indSharesSum.toLocaleString()}주 (${indPctSum.toFixed(1)}%)`;
+    corpSharesTotalStr = `${corpSharesSum.toLocaleString()}주 (${corpPctSum.toFixed(2)}%)`;
+    indSharesTotalStr = `${indSharesSum.toLocaleString()}주 (${indPctSum.toFixed(2)}%)`;
   }
 
   // 당기 vs 전기 평가 비교액 연산
@@ -119,19 +119,33 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
   let isCapUp = true;
 
   if (detailInfo) {
-    const curPrice = parseInt(detailInfo.pricePerShare.replace(/[^0-9]/g, ''));
-    const prevPrice = parseInt(detailInfo.prevPricePerShare.replace(/[^0-9]/g, ''));
-    const diffPrice = curPrice - prevPrice;
-    isPriceUp = diffPrice >= 0;
-    const pctPrice = ((diffPrice / prevPrice) * 100).toFixed(1);
-    diffPriceStr = `${isPriceUp ? '▲' : '▼'} ${Math.abs(diffPrice).toLocaleString()}원 (${isPriceUp ? '+' : ''}${pctPrice}%)`;
+    const curPriceVal = detailInfo.pricePerShare.replace(/[^0-9]/g, '');
+    const prevPriceVal = detailInfo.prevPricePerShare.replace(/[^0-9]/g, '');
+    const curPrice = curPriceVal ? parseInt(curPriceVal) : NaN;
+    const prevPrice = prevPriceVal ? parseInt(prevPriceVal) : NaN;
 
-    const curCap = parseInt(detailInfo.marketCap.replace(/[^0-9]/g, ''));
-    const prevCap = parseInt(detailInfo.prevMarketCap.replace(/[^0-9]/g, ''));
-    const diffCap = curCap - prevCap;
-    isCapUp = diffCap >= 0;
-    const pctCap = ((diffCap / prevCap) * 100).toFixed(1);
-    diffCapStr = `${isCapUp ? '▲' : '▼'} ${Math.abs(diffCap).toLocaleString()} 백만원 (${isCapUp ? '+' : ''}${pctCap}%)`;
+    if (!isNaN(curPrice) && !isNaN(prevPrice) && prevPrice > 0) {
+      const diffPrice = curPrice - prevPrice;
+      isPriceUp = diffPrice >= 0;
+      const pctPrice = ((diffPrice / prevPrice) * 100).toFixed(1);
+      diffPriceStr = `${isPriceUp ? '▲' : '▼'} ${Math.abs(diffPrice).toLocaleString()}원 (${isPriceUp ? '+' : ''}${pctPrice}%)`;
+    } else {
+      diffPriceStr = '—';
+    }
+
+    const curCapVal = detailInfo.marketCap.replace(/[^0-9]/g, '');
+    const prevCapVal = detailInfo.prevMarketCap.replace(/[^0-9]/g, '');
+    const curCap = curCapVal ? parseInt(curCapVal) : NaN;
+    const prevCap = prevCapVal ? parseInt(prevCapVal) : NaN;
+
+    if (!isNaN(curCap) && !isNaN(prevCap) && prevCap > 0) {
+      const diffCap = curCap - prevCap;
+      isCapUp = diffCap >= 0;
+      const pctCap = ((diffCap / prevCap) * 100).toFixed(1);
+      diffCapStr = `${isCapUp ? '▲' : '▼'} ${Math.abs(diffCap).toLocaleString()} 백만원 (${isCapUp ? '+' : ''}${pctCap}%)`;
+    } else {
+      diffCapStr = '—';
+    }
   }
 
   return (
@@ -210,8 +224,8 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                       >
                         <div className="gov-scale-card-header" style={{ color: comp.titleColor }}>{comp.name}</div>
                         <div className="gov-scale-card-value-wrap">
-                          <div className="gov-scale-card-value">{comp.value.toLocaleString()} 백만원</div>
-                          <div className="gov-scale-card-pct">({comp.pct}%)</div>
+                          <div className="gov-scale-card-value">{comp.value === 0 ? '평가 전' : `${comp.value.toLocaleString()} 백만원`}</div>
+                          <div className="gov-scale-card-pct">{comp.value === 0 ? '' : `(${comp.pct}%)`}</div>
                         </div>
                         <div className="gov-scale-card-details">
                           <div className="gov-scale-detail-row">
@@ -221,7 +235,7 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                           <div className="gov-scale-divider" />
                           <div className="gov-scale-detail-row">
                             <span className="label">주당 가치</span>
-                            <span className="val">{comp.pricePerShare.toLocaleString()}원</span>
+                            <span className="val">{comp.pricePerShare === 0 ? '평가 전' : `${comp.pricePerShare.toLocaleString()}원`}</span>
                           </div>
                         </div>
                       </div>
@@ -245,8 +259,8 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                       >
                         <div className="gov-scale-card-header" style={{ color: comp.titleColor }}>{comp.name}</div>
                         <div className="gov-scale-card-value-wrap">
-                          <div className="gov-scale-card-value">{comp.value.toLocaleString()} 백만원</div>
-                          <div className="gov-scale-card-pct">({comp.pct}%)</div>
+                          <div className="gov-scale-card-value">{comp.value === 0 ? '평가 전' : `${comp.value.toLocaleString()} 백만원`}</div>
+                          <div className="gov-scale-card-pct">{comp.value === 0 ? '' : `(${comp.pct}%)`}</div>
                         </div>
                         <div className="gov-scale-card-details">
                           <div className="gov-scale-detail-row">
@@ -256,7 +270,7 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                           <div className="gov-scale-divider" />
                           <div className="gov-scale-detail-row">
                             <span className="label">주당 가치</span>
-                            <span className="val">{comp.pricePerShare.toLocaleString()}원</span>
+                            <span className="val">{comp.pricePerShare === 0 ? '평가 전' : `${comp.pricePerShare.toLocaleString()}원`}</span>
                           </div>
                         </div>
                       </div>
@@ -267,23 +281,21 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                 {/* 3행: OPEN END, I, H, J */}
                 <div className="sh-scale-row sh-scale-row-3">
                   {SCALE_COMPANIES_ROW3.map(comp => {
-                    const isHovered = comp.id !== 'open_end' && hoveredNodeId === comp.id;
+                    const isHovered = hoveredNodeId === comp.id;
                     return (
                       <div
                         key={comp.id}
                         className={`gov-scale-card${isHovered ? ' hovered' : ''}`}
-                        style={{ borderColor: comp.borderColor, cursor: comp.id === 'open_end' ? 'default' : 'pointer', '--card-color': comp.borderColor } as React.CSSProperties}
+                        style={{ borderColor: comp.borderColor, cursor: 'pointer', '--card-color': comp.borderColor } as React.CSSProperties}
                         onClick={() => {
-                          if (comp.id !== 'open_end') {
-                            setSelectedNodeId(comp.id);
-                            setIsScaleMode(false);
-                          }
+                          setSelectedNodeId(comp.id);
+                          setIsScaleMode(false);
                         }}
                       >
                         <div className="gov-scale-card-header" style={{ color: comp.titleColor }}>{comp.name}</div>
                         <div className="gov-scale-card-value-wrap">
-                          <div className="gov-scale-card-value">{comp.value.toLocaleString()} 백만원</div>
-                          <div className="gov-scale-card-pct">({comp.pct}%)</div>
+                          <div className="gov-scale-card-value">{comp.value === 0 ? '평가 전' : `${comp.value.toLocaleString()} 백만원`}</div>
+                          <div className="gov-scale-card-pct">{comp.value === 0 ? '' : `(${comp.pct}%)`}</div>
                         </div>
                         <div className="gov-scale-card-details">
                           <div className="gov-scale-detail-row">
@@ -293,7 +305,7 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                           <div className="gov-scale-divider" />
                           <div className="gov-scale-detail-row">
                             <span className="label">주당 가치</span>
-                            <span className="val">{comp.pricePerShare.toLocaleString()}원</span>
+                            <span className="val">{comp.pricePerShare === 0 ? '평가 전' : `${comp.pricePerShare.toLocaleString()}원`}</span>
                           </div>
                         </div>
                       </div>
@@ -308,32 +320,32 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                   <div className="sh-scale-stat-icon-wrap"><Users size={18} /></div>
                   <div className="sh-scale-stat-info">
                     <span className="sh-scale-stat-label">전체 회사가치 합계</span>
-                    <span className="sh-scale-stat-val">3,890,000 백만원</span>
-                    <span className="sh-scale-stat-val-desc">(3조 8,900억원)</span>
+                    <span className="sh-scale-stat-val">247,230 백만원</span>
+                    <span className="sh-scale-stat-val-desc">(2,472.3억 원)</span>
                   </div>
                 </div>
                 <div className="sh-scale-stat-card">
                   <div className="sh-scale-stat-icon-wrap"><Star size={18} /></div>
                   <div className="sh-scale-stat-info">
                     <span className="sh-scale-stat-label">최대 회사 가치</span>
-                    <span className="sh-scale-stat-val">A사 1,250,000 백만원</span>
-                    <span className="sh-scale-stat-val-desc">(1조 2,500억원)</span>
+                    <span className="sh-scale-stat-val">삼안 127,125 백만원</span>
+                    <span className="sh-scale-stat-val-desc">(1,271.3억 원)</span>
                   </div>
                 </div>
                 <div className="sh-scale-stat-card">
                   <div className="sh-scale-stat-icon-wrap"><TrendingUp size={18} /></div>
                   <div className="sh-scale-stat-info">
                     <span className="sh-scale-stat-label">평균 회사 가치</span>
-                    <span className="sh-scale-stat-val">389,000 백만원</span>
-                    <span className="sh-scale-stat-val-desc">(3,890억원)</span>
+                    <span className="sh-scale-stat-val">22,475 백만원</span>
+                    <span className="sh-scale-stat-val-desc">(224.8억 원)</span>
                   </div>
                 </div>
                 <div className="sh-scale-stat-card">
                   <div className="sh-scale-stat-icon-wrap"><Building size={18} /></div>
                   <div className="sh-scale-stat-info">
                     <span className="sh-scale-stat-label">100억원 이상 회사</span>
-                    <span className="sh-scale-stat-val">6개사 / 10개사</span>
-                    <span className="sh-scale-stat-val-desc">(60.0%)</span>
+                    <span className="sh-scale-stat-val">4개사 / 11개사</span>
+                    <span className="sh-scale-stat-val-desc">(36.4%)</span>
                   </div>
                 </div>
               </div>
@@ -466,8 +478,8 @@ const TeamOverlay: React.FC<TeamOverlayProps> = ({ onClose: _onClose }) => {
                   {/* 기업 가치 평가 박스 */}
                   <div className="sh-detail-valuation-box">
                     <span className="val-title">비상장주식 평가에 따른 기업가치(시가총액)</span>
-                    <span className="val-amount">{detailInfo.marketCap}</span>
-                    <span className="val-date">(기준일 {detailInfo.valuationDate})</span>
+                    <span className="val-amount">{detailInfo.prevMarketCap}</span>
+                    <span className="val-date">(전기 기준)</span>
                   </div>
                 </div>
 
