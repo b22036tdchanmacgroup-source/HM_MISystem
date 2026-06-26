@@ -17,7 +17,7 @@ const MembersMain: React.FC<MembersMainProps> = (_props) => {
       flexShrink: 0,
     }}>
       <iframe
-        src="/members.html"
+        src={`${import.meta.env.BASE_URL}members.html`}
         title="인원현황"
         style={{
           position: 'absolute',
