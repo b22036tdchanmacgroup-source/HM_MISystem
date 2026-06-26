@@ -1,0 +1,135 @@
+.members-dashboard {
+  padding: 24px;
+  background: rgba(30, 30, 40, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  margin: 20px;
+}
+
+.members-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.members-dashboard-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.members-count-badge {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #a5b4fc;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.members-stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0 0 8px 0;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  color: #38bdf8;
+}
+
+.members-list-section h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #e5e7eb;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.member-item-card {
+  display: flex;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  transition: background 0.2s;
+}
+
+.member-item-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.member-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.member-rank {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.member-contact, .member-email {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.no-members-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px;
+  color: #6b7280;
+  font-size: 14px;
+}

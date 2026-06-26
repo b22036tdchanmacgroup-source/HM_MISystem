@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>한맥가족 MIS - 인원현황 (본문)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  /* ========================================================
+     1. CSS Variables & Reset
+     ======================================================== */
+  :root {
+    --green: #064c34; --green2: #0b6b49; --bg: #f3f0e9; --card: #fffdfa;
+    --line: #ded9cf; --text: #222; --muted: #6b6b6b; --orange: #ff7300;
+    --teal: #00a99a; --red: #c90000; --brown: #6d3f08; --bar: #bfe9d9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: 'Noto Sans KR', "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  /* ========================================================
+     2. Layout Container
+     ======================================================== */
+  .dashboard-main {
+    width: 1920px;
+    height: 1080px; /* 고정바 포함 1080px 전체 사이즈 (16:9 규격) */
+    margin: 0 auto;
+    background: linear-gradient(to bottom, #fcfaf5 0%, #e8e1d2 45%, #e8e1d2 100%);
+    transform-origin: top left;
+    display: flex;
+    flex-direction: column;
+  }
+  @media(max-width: 1919px) {
+    .dashboard-main { transform: scale(calc(100vw / 1920)); }
+  }
+  
+  .top-placeholder {
+    height: 49px; /* 상단 고정바가 들어갈 빈 공간 */
+    flex-shrink: 0;
+  }
+
+  /* ========================================================
+     3. KPI Section Component
+     ======================================================== */
+  .kpi-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: transparent; /* 배경 패널과 동일한 색상 (투명) */
+    height: 86px;
+    flex-shrink: 0;
+  }
+  .kpi-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-right: 1px solid var(--line); /* 구분선만 표시 */
+    height: 100%;
+    padding-top: 15px; /* 이모지와 내용을 아래로 내림 */
+  }
+  .kpi-card:last-child { border-right: none; }
+  .kpi-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .kpi-icon svg { width: 100%; height: 100%; stroke: #736b61; }
+  .kpi-icon.teal svg { stroke: var(--teal); }
+  .kpi-icon.red svg { stroke: var(--red); }
+  
+  .kpi-content { display: flex; flex-direction: column; }
+  .kpi-label { font-size: 18px; color: #594f47; font-weight: 800; margin-bottom: 2px; }
+  .kpi-value { font-size: 38px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+  .kpi-value .unit { font-size: 22px; font-weight: 500; margin-left: 4px; }
+  .kpi-value.teal { color: var(--teal); }
+  .kpi-value.red { color: var(--red); }
+
+  /* ========================================================
+     4. Summary Section Component
+     ======================================================== */
+  .summary-section {
+    margin: 18px 18px 0;
+    height: 380px;
+    background: #fffdf9;
+    border: none;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .badge-title {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 48px;
+    color: #ff6500;
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 34px;
+    z-index: 10;
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 3px 5px rgba(255, 100, 0, 0.15);
+  }
+  .badge-title::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, #fffdf8, #ffead3);
+    border: 1px solid #f3c7a4;
+    border-top: none;
+    border-radius: 0 0 25px 25px;
+    transform: perspective(100px) rotateX(-10deg);
+    transform-origin: top;
+    z-index: -1;
+    box-shadow: 0 2px 5px rgba(255,100,0,0.1);
+  }
+  .summary-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 39% 22% 39%;
+    padding: 20px 50px 0; /* 그래프 상단 마진을 줄여서 위로 올림 */
+  }
+  
+  /* Chart Headers */
+  .chart-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px; /* 헤더 여백 조정 */
+  }
+  .chart-title { font-size: 22px; font-weight: 900; margin: 0; }
+  .chart-title.green { color: #164d3a; }
+  .chart-title.brown { color: #583506; }
+  
+  /* (단위: 명) 우측 끝 라인 맞춤 */
+  .chart-unit { 
+    position: absolute; 
+    right: 0; 
+    bottom: 2px; /* 텍스트 베이스라인 정렬 */
+    font-size: 16px; 
+    color: #666; 
+  }
+  .chart-header.right-align .chart-unit {
+    right: auto;
+    left: 0;
+  }
+
+  /* Horizontal Bar Chart (Left to Right) */
+  .bar-chart { display: flex; flex-direction: column; gap: 8px; position: relative; } /* gap을 줄여 하단 여백 확보 */
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { 
+    width: 75px; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* 우측 정렬 강제 적용 */
+    font-size: 18px; 
+    color: #555; 
+    white-space: nowrap;
+  }
+  .bar-track {
+    flex: 1;
+    height: 26px;
+    background-color: #f8fbf8;
+    background-image: linear-gradient(to right,
+      transparent 25%, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.05) calc(25% + 1px),
+      transparent calc(25% + 1px), transparent 50%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.05) calc(50% + 1px),
+      transparent calc(50% + 1px), transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05) calc(75% + 1px),
+      transparent calc(75% + 1px)
+    );
+    border-radius: 2px;
+    box-shadow: inset 0 0 8px #d7e9df;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #bde8d7, #cfefe3);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+  }
+  .bar-value { font-size: 18px; color: #164d3a; font-weight: 900; }
+  
+  .axis { display: flex; justify-content: space-between; margin-top: 8px; color: #777; font-size: 17px; padding-left: 87px; }
+
+  /* Horizontal Bar Chart Reverse (Right to Left) */
+  .bar-row.reverse .bar-label { justify-content: flex-start; } /* 우측 차트의 라벨은 좌측 정렬 */
+  .bar-row.reverse .bar-track {
+    background-color: #fff;
+    background-image: linear-gradient(to right,
+      transparent 33.333%, rgba(0,0,0,0.05) 33.333%, rgba(0,0,0,0.05) calc(33.333% + 1px),
+      transparent calc(33.333% + 1px), transparent 66.666%, rgba(0,0,0,0.05) 66.666%, rgba(0,0,0,0.05) calc(66.666% + 1px),
+      transparent calc(66.666% + 1px)
+    );
+    box-shadow: inset 0 0 10px #e5ded5;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Text Stroke for Axes & Labels */
+  .axis span, .jobaxis span, .bar-label {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .bar-row.reverse .bar-fill {
+    background: linear-gradient(90deg, #e8daca, #d7c5b3);
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 10px;
+  }
+  .bar-row.reverse .bar-value { color: #4d321c; }
+  
+  .jobaxis { display: flex; justify-content: space-between; margin-top: 8px; color: #777; font-size: 17px; padding-right: 87px; }
+
+  /* Center Total Box */
+  .total-people-container {
+    display: flex;
+    flex-direction: column; /* 아이콘을 위로 올리고 세로로 정렬 */
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding-top: 45px;
+  }
+  .total-icon { width: 68px; height: 68px; }
+  .total-icon svg { width: 100%; height: 100%; stroke: #ff7a0a; }
+  .total-text { display: flex; flex-direction: column; align-items: center; } /* 텍스트 가운데 정렬 */
+  .total-label { font-size: 26px; color: #777; font-weight: 800; line-height: 1; margin-bottom: 5px; }
+  .total-value { font-size: 52px; color: #ff7300; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .total-unit { font-size: 24px; color: #777; font-weight: 600; margin-left: 2px; }
+
+  /* Job List Bottom Bar */
+  .job-list {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    height: 94px;
+    border-top: 1px solid #e3dccf;
+    background: linear-gradient(to bottom, #fdfbfa, #efe9d8);
+    border-radius: 0 0 8px 8px;
+  }
+  .job-item { 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px; 
+  }
+  .job-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 16px;
+    bottom: 16px;
+    width: 1px;
+    background: #ded8cd;
+  }
+  .job-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+  .job-icon svg { width: 100%; height: 100%; stroke: #686868; }
+  .job-info { display: flex; flex-direction: column; }
+  .job-name { font-size: 18px; color: #555; font-weight: 800; line-height: 1.2; }
+  .job-value { font-size: 26px; font-weight: 900; color: #111; line-height: 1.2; }
+  .job-value span { font-size: 16px; font-weight: 500; margin-left: 2px; }
+
+  /* ========================================================
+     5. Companies Section Component
+     ======================================================== */
+  .companies-section {
+    margin: 18px 18px 0;
+    height: 222px;
+    display: grid;
+    grid-template-columns: 540px 780px 260px 244px;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+  .company-group {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .group-title {
+    text-align: center;
+    font-size: 16px;
+    color: #174a7c;
+    padding: 8px 0;
+    border-bottom: none;
+    margin: 0;
+    font-weight: 800;
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(238,233,220,1) 80%, rgba(255,255,255,0) 100%);
+  }
+  .company-list { display: grid; flex: 1; }
+  .company-list.cols-2 { grid-template-columns: 1fr 1fr; }
+  .company-list.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .company-list.cols-1 { grid-template-columns: 1fr; }
+  .company-item { display: flex; flex-direction: column; border-right: 1px solid #f0f0f0; }
+  .company-item:last-child { border-right: none; }
+  
+  .company-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 5px; padding-bottom: 15px; }
+  .company-logo { display: flex; align-items: center; justify-content: center; margin-bottom: 6px; height: 32px; }
+  .company-logo img { max-width: 100%; height: 100%; object-fit: contain; }
+  .company-count { font-size: 30px; font-weight: 900; line-height: 1; }
+  .company-count span { font-size: 16px; font-weight: 500; margin-left: 2px; }
+  
+  .company-metrics { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    background: #fbfbfa; 
+    border-top: 1px solid #e8e8e8; 
+    box-shadow: inset 0 5px 8px -5px rgba(0,0,0,0.07); 
+  }
+  .metric { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 0; border-right: 1px solid #f0f0f0; font-size: 16px; color: #555; font-weight: 800; }
+  .metric:last-child { border-right: none; }
+  .metric span { font-size: 24px; font-weight: 900; margin-top: 4px; }
+  .metric span.teal { color: var(--teal); }
+  .metric span.red { color: var(--red); }
+
+  /* ========================================================
+     6. Charts Section Component
+     ======================================================== */
+  .charts-section {
+    margin: 20px 18px 0;
+    height: 220px;
+    display: grid;
+    grid-template-columns: 500px 465px 1fr;
+    gap: 33px;
+    flex-shrink: 0;
+  }
+  .chart-card { display: flex; flex-direction: column; position: relative; }
+  .chart-title-area { position: relative; margin-bottom: 12px; }
+  .chart-card .chart-title { font-size: 22px; font-weight: 900; color: #111; margin: 0; }
+  .chart-card .chart-unit { position: absolute; right: 0; top: 7px; font-size: 15px; color: #666; }
+  
+  .legend { position: absolute; right: 0; top: 4px; font-size: 15px; color: #666; display: flex; align-items: center; gap: 15px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { color: var(--orange); font-size: 18px; line-height: 1; }
+  .legend-sq { width: 12px; height: 12px; display: inline-block; }
+  
+  .chart-body { flex: 1; background: linear-gradient(to bottom, #ffffff, #f2f3f5); border: 1px solid #e4ded4; border-radius: 8px; padding: 10px 10px 4px; }
+  .chart-card.linechart .chart-body { padding: 0; }
+  
+  /* SVG Chart Styles */
+  .charts-section svg text {
+    font-family: 'Noto Sans KR', sans-serif;
+    paint-order: stroke fill; stroke: #fff; stroke-width: 2.5px; stroke-linecap: round; stroke-linejoin: round;
+    filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.15));
+  }
+  .barsvg text { 
+    font-size: 15px; fill: #4b4036; 
+  }
+  .barlabel { font-size: 17px; font-weight: 900; fill: #583506; }
+</style>
+</head>
+<body>
+
+<main class="dashboard-main">
+  
+  <!-- 상단바가 들어갈 빈 공간 -->
+  <div class="top-placeholder"></div>
+  
+  <!-- 1. KPI Section -->
+  <section class="kpi-section">
+    <article class="kpi-card">
+      <div class="kpi-icon">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAABopJREFUeAHtWU1sG1UQnvdsN6jEkfhRAZlzaeBanERcGieXSlXttEJCQqkRR0o4ogDi2DT3BM6kPSJiO4pUocYOqoRSu71wgPTADYI49RCbUtfeN8y8XW9c22vvrtdtkPaTbO961+P37Xsz8808gBAhQoQIESJEiBAhQviBcLpwKTWzYAhj8gRGNr4v7R2AB2RSM0kUxjwfRzCyv1nay8GQCMpmT8Lnz09NjNXhnr4B4XZut/wpuB3Y7PQS/eip+xEwVyhVlsEngrQpe305Xpdx27CACXAJXhVtAyvTqHb4QIBYyKSSrh/aKG1KCBAIKqkHQ6siXypfye+WryLApvmdOAM+ELTNQAm3oARUW8cCkPxfvEAr5TQMgW6b3lZfC1EIECjwd1BwSgjxcXpuuioUDRIxS1dep1GOsy/md++uebIJWKe3U0Tzg6dsCr4GnoIpIzDC76dmEg3ERRpIlAYUpVnI2iER8Q8asGBfXJhNxnO7lRU3NtOp6a/o40O2SfZOtohqk0TWALkOHhEIYU0W1E06fIOI/U3DuUP8XiG/i9Oy21HjsXVZa9BMiyUUIptOJSdwPHZta+vnah97q2SH/VfRiikoBX8JCadbNvHF6Pq2w+/7YWjCbWQTfI5gfF7YvdcrR65TVAUmzRFW/NM8c/Hie4uypiYpkCQUzVi+tFfhfGuSNe2RxbVcsex5Jp0wFOFusmq5ULrnKAjypYpNmhz+HVlt/koroa4AFV9Pz04bNKFjdNgkY1UQxif50v0KBAjfUdor2RaYtARJggFfptPX6PMkueWf5lV8iXzzVfLT/aaQ6aDJMnwR9ku2hX/HVJE+HhGxQ4Xwda5UnqOhLFJYOyRjDyOGXN72KGfdwhfhYcgyLCX3iF4PlZA/8nfsv/xJpJ8YsuE5v7qFPx9GSvjCH1lGbUxVxx6zj0I8hkb28rmZzabEyzrZADtwbCSzy/BFmP1LjsvDLR9pgXHrVvnw4lxyTaL4ktOUIVTWrmIEfLdd7L2cL5ArnQDQUrMV1cEjfBEOwr+2ipUNithxitYf8UzrqCzhh3yxfL3z3qO8rJKq7ftMauqAAuCal1JxJFraLThiUzFwtgmPUyoene1DlmNGsocJyt9qdWF25gq4xDMhzGIiMz8z53R9u/TLgZN7NNBgeWmLEDUePUtV01sAxmJLS1MsWeIHAy4wcsIk+KlLQTOk1Le6tvWAhfnpSQrb+kEJxGu8IloPhnM0aelFU6DAREMoV7M8csIClV2zKjBczYL9W2XYv6WC40bndY4llMZu6xOESXCB5+rDbtGvDESrNnaLY01YQVSToZSVcPZRMaXfkVSaCxxrwvUx9UD7KGh1t9p5PXNumkpOKy8LLVcHYmAepuX0JjwntAsUOk1S3i3RiDbNqzyzaKYqKjYKRXeK79j7MAsUTkfWaUKXlvoFNtkmyqtu7QVCmAr5OIwQnI6aIFO6W0kErXKyzFqexErGi/IbuuPBuVXVmqss80gUpP3q60GwSH0BQ2JowiTtLlmHCVmrcy4MvGhnpQYKJzGiErpSs6BnWkb21UlZcfugA23TBglOQ0+EkRVK0ANVcXY+arx330jdPeqLcSFBD1quDaqgjh1hjgeiZnxGaeiKJmhx5NlUHauH8zPN+Nu62tJBTN3MzE7txIRccdoA7ElYF+h1yyjCSANSO3RlVGu2dVPgQCjcUBOxzX5LNj13dl5ghLX0FJGfb6DiYmU5v7PXlZt7RmnOf/aJj+0Mv2hvHXEqKpTKqfxPlY1B/lko3t/hfSeO2lqG8pipWKFOStfeU7+0ZC+JCy5LrwBg/g91PTgVgUdwuykCyt7K6dUb60MYH7SOItBMwrME4khSG6PfDP/WOhBCOm5LHvWUnf4AR9aQ84M+hCNHEVHBJadqpcEbWrQEzQK9u3G+yV1NhStmtyK2Ac8ZjmnJ3Ofh3Ebh3uwofEOkr3aGe0sBXYc+4MADxwQDtLQ82suljgJHUZaSo9bOo0Rf4cGzTOXZilWeMXSX0FY2VHSjxANdfCtZlVK4KsIZSsJhrzw5agg3N6VT71LzTS4JO0cGBVxrTz+kku5r1UQVEeJRlvAC2orlMVpZxVjsjCuupCXnN8rFFU5PFLGzbhtmg0cn4h2j3deDJfs08OH+gzolTdG9ZeNqhjvBPsyVkaSnqcwnqgeP6F6V8U4hFe432mtZFjhRard6seME2RQ3cnfu7kOIECFChPgf4T/P+B38GbzzRwAAAABJRU5ErkJggg==" alt="평균 연령" style="width:100%; height:100%; object-fit:contain;">
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">평균 연령</div>
+        <div class="kpi-value">42.5<span class="unit">세</span></div>
+      </div>
+    </article>
+    <article class="kpi-card">
+      <div class="kpi-icon teal">
+        <img src="data:image/png;base64,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" alt="신규입사자" style="width:100%; height:100%; object-fit:contain;">
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">신규입사자</div>
+        <div class="kpi-value teal">+ 85<span class="unit">명</span></div>
+      </div>
+    </article>
+    <article class="kpi-card">
+      <div class="kpi-icon red">
+        <img src="data:image/png;base64,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" alt="퇴사자" style="width:100%; height:100%; object-fit:contain;">
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">퇴사자</div>
+        <div class="kpi-value red">- 43<span class="unit">명</span></div>
+      </div>
+    </article>
+    <article class="kpi-card">
+      <div class="kpi-icon">
+        <img src="data:image/png;base64,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" alt="평균 근속연수" style="width:100%; height:100%; object-fit:contain;">
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-label">평균 근속연수</div>
+        <div class="kpi-value">6.81<span class="unit">년</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 2. Summary Section -->
+  <section class="summary-section">
+    <div class="badge-title">그룹 인력 종합 현황</div>
+    
+    <div class="summary-content">
+      <!-- Left: Age Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3 class="chart-title green">연령별 인원 구성</h3>
+          <span class="chart-unit">(단위 : 명)</span>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label">20대</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:28.9%"><span class="bar-value">231</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">30대</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:75.8%"><span class="bar-value">606</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">40대</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:64.8%"><span class="bar-value">518</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">50대</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:94.1%"><span class="bar-value">753</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">60대</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:80.3%"><span class="bar-value">642</span></div>
+            </div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">70대이상</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:17.5%"><span class="bar-value">140</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="axis"><span>0</span><span>200</span><span>400</span><span>600</span><span>800</span></div>
+      </div>
+      
+      <!-- Center: Total Count -->
+      <div class="total-people-container">
+        <div class="total-icon">
+          <img src="data:image/png;base64,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" alt="총 인원" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="total-text">
+          <span class="total-label">총 인원</span>
+          <div><span class="total-value">2,890</span><span class="total-unit">명</span></div>
+        </div>
+      </div>
+      
+      <!-- Right: Job Title Chart -->
+      <div class="chart-container">
+        <div class="chart-header right-align">
+          <h3 class="chart-title brown">직급별 인원 구성</h3>
+          <span class="chart-unit">(단위 : 명)</span>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:36.7%"><span class="bar-value">551</span></div>
+            </div>
+            <div class="bar-label">사원</div>
+          </div>
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:14.5%"><span class="bar-value">217</span></div>
+            </div>
+            <div class="bar-label">대리</div>
+          </div>
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:18.1%"><span class="bar-value">272</span></div>
+            </div>
+            <div class="bar-label">차장</div>
+          </div>
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:12.0%"><span class="bar-value">180</span></div>
+            </div>
+            <div class="bar-label">과장</div>
+          </div>
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:13.3%"><span class="bar-value">200</span></div>
+            </div>
+            <div class="bar-label">부장</div>
+          </div>
+          <div class="bar-row reverse">
+            <div class="bar-track">
+              <div class="bar-fill" style="width:98.0%"><span class="bar-value">1,470</span></div>
+            </div>
+            <div class="bar-label">임원</div>
+          </div>
+        </div>
+        <div class="jobaxis"><span>1,500</span><span>1,000</span><span>500</span><span>0</span></div>
+      </div>
+    </div>
+    
+    <!-- Job List Footer -->
+    <div class="job-list">
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAo9JREFUeAHtmC9zFDEYxp9rBwQIEMVgakCAAGY4A6J8h4KgBo1CoHHwBZhhhkFjEHAGAZUcAoMB0ZoKQGBaU8EZRPs+3aSTZjbJmzf9J/Y388z1NrfZX7PJ5r0DBgYGBnLMo47HkgXJBk6IGmHKLkluuvfraOO2ZMX191sy05ykFfaym5IR2qXZ1xPJZcmiZCyZSv6XTtQIh7LPJd8kd2GXXnJ9hpyX3HB9Z6VLwrHslmRb8gM26T5Zz0UopOcrZT0W6Zysh9JnJD9RKZyT9VD6Crp5eN0dW2+Q9XB0p6nGucTxX+71HLr51QcFuFj4T3GF33eJCWU3UWaaa0yNMJ+zO5JbkjvobtF20E7RhygvxFD2teSDOzc1CO8ln2EQ9hdNSf+V/JO8Q3ohXopkv6K7E98T0pSdoEDpKZGT3sDBh30sPY5kPV76HroFppbVCJekY3j8guRqQtYzdn1VyQL6nU4rzTm7grxsOK+rZElNLVGSjhfYocuS2motJX0ssqRWmMTSZyWPXNuRyhKLMAml/S6nkfXnmkvTOdgZBX9rRza3I6qwjnB4UY0sP7MKe5W3j0XYIus/01Ka7lEr3CLraZKuEa6V5ZxdTfTFJwufMKwnSqXpAbTCtbKE39X6dkQWRc/cK2sKFu3qkdYIW0Z2DfkdkdPhi+QVKqdHSdgiO0G5yuPX+o/ufdWczgnzlj01yCK4aK6eDomlWWv3/lij2TjWYN9uJ66Ni4vzdhFpZk4Uuc9Zd7qa2kAjHS5Ezu03qc4swpZCJietliWjTBs7eInuNv0Jjl9DnWzIsuSB6/MFumngZT9J3pY60Aj30VIihtIzdx11f6NC+0Li+Bba8NKkqT4+TpZdBgYGTjO7kuXzIT4NZ1IAAAAASUVORK5CYII=" alt="설계" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">설계</span><span class="job-value">1,202<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAZZJREFUeAHtmLFOwzAQhg/UqZ2ZYYUVZlhhZoYVJvoETAzsLHSmK/AOwEhneIiytivcLztqFdmOL1EuobpPOqnN5ZQvduzEJjIMw9gothK5Icclx5H/rck7xxPHspwYJIoge+yLvkiPPX9dMCknU8IoWnCMKXCnLYLefOA4DCW3K4qXpCtbXBMNNQolq4R7x78THgjO3ec4ieTQhVNSQCK8Q6vRW2ZOPRSecdxQx0iE25wx0HvznBP7MOh2Oe45znNO7loYsrfkXha/OQVdCq/LPnO85hRJZ4mDSA7T2iySQ035W6SWLJDOw1eRHAZMSPiU3EfUiw+wLvvI8UECJMJopUkkt4gcx02c0WpA4X9tWSAR/iH3nSoBNXfkJCEN+dqyQGPQFdJ4bBrJAkkLN6GQxjioLQs0pzVIN5IFkhZGd44S+axXa1MkwliMXkdykB2TAhJhSL1FcmrLKInwt49OsTVd26SE8VwOSX/XJzkbpZ7hT3KLTmxqaG+kIIIDvGpv7YLiK+W2QOOgsaakv4ljGIZhVPAHZEpJkvtpAe0AAAAASUVORK5CYII=" alt="감리" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">감리</span><span class="job-value">765<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAahJREFUeAHtmLFOwzAURS+oE6ww05XOnctHMMMKGxKsMPULmACJCVbEWlbCCit752ZNZ96VbcmxEpukCTGSj3TVxJaV09iu7QKJRCKRSDRgy1O3IzmVTPV1iHfJA3pm5Kmj7EyylnzDz77kSF/3Ku0TpmwhuYCS9rEnucEfSI8C9WuEZUkumUuuoKR3JV9oB1/SUrKqqgwJN8FI801PdTbhXpK5hV0KE/YGpTeRPYTqpRPJJ5we7loY+gEZ2sO2nMQTqKFVEt5GnOR1FbEK1/LvhPsYw13AhYqra+FWxCqcoWbipjHcN7EK1+4OYxQ+ljxKbqEWkBKxCZ9DCRPKXsORjkmYsjOnjLJndkEswlWyhgP7JgZhI7tA9d57Yd8MLWxkXyTPUFtTW5rlr3aDoVY6c8A1skaKsoWuf5K8uQ2HEKYMZ/8YZVn7V+FO8lHV2CfMDQg30ey2FZrDY3/epWxImGPqEvWzNwS/cN6lLPEJ8+Q61w/4zR8pLm6vjHU461vJktAYzuE5rrRkqT8by5IhJh2HGOcGT8eNZMkQwhPrupFsIpFIhPkBlohUryZiTxsAAAAASUVORK5CYII=" alt="CM" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">CM</span><span class="job-value">202<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAAkCAYAAAAU/hMoAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA8RJREFUeAHNmCtsFFEUhn9ephUgugZDTUVrENRAQmtbU1MMJIBAUAQQioGkNUBaDCSgSkDRBBCAQbQGQQ0kUEFFK6jo6q4A0YrWcL/ec7Ozw8zO7O7dhJOczOvce//5z+M+jiiuXHZ6z+43FEmOKI70OL3m9LTTZaeTTredVvUfyZTTZ0777HnM6UunpxRBYjE5LM/aN3vedHrM6UWnq0531YEcVhz54XQk9e6j03WnM/Lh0LbEAglTvU4HU+8BWnE6rQ4kFsggoznv++Uzvy2JDfKMsl37RP4HJtWGxAQZSk6Wa2vyQAE5ohYlNpML8q4dy/i2Yd8pVy2VpkOKI0NOrzu9bSDKsIXtdgm76EwmBQD37R5Al+yKULIoTZUyHXUL5Ip8WZrK+b4o/xN3VKKGdpNJEqUZU0/la2thaTqq7gkZTaKQ7YHRwFqS4VGz/ZDXUTeZRIi9JfmZaEt+mlTinrCgbFGaxvI66SaTQWCI7IdFpslx+eVcyOyKfbti71bTHcRYBcHSDRsM11EDj8szhBv3nf50elV+ZTRgIMPKaNjsvsuvmtac/kkOEMvdrCNh7L28eytqXJ4B4rU8i3kCy7h/WqmEi8EkAGDvpHxpISmIxc8pO5jFrQP2zHXIFOZPyLPO81kDzPPBjEPDXrUvO3Z9bkBg9aH+nc2C3bw8UyGJKjb+VsK21+wfBZCv1NmilGBnJiE7Cf4FAzufslu3QfmJx/KhQWyGcrSQsMVmVt4ji2T3rQ5BhtgjKy/Yc9X6zbKrGcBJZWRywgZvkFQHJWhXHe5B5F0Gc7C6kxgoT5atDfN3NWf8mtlFy25cTQlhQcGSjCwu8k6YYYYL7KIV82TiwRDzMTHYbN8Ne7iU+KTWzmbYEKfbsba0uJlCzOEAsfbL6acS7QC65/ScvAeq1ldQfvSgDPHng2pdKqpPaUifARwvaIf9UOodC+Y55YQITBITd+256PymYkDI3AkDNGGDwgqBvlnQ/oFdvybehzimoK9lgYRi6hFnOXtNBqGTm3b/zulb+SmQtrA4amCZp/eVDXDG7F+kvu0bUOrsbzWJZVz+RtmbpHH7dl75AlDKUJ7bplV8SBDOkJpuK4iNmdS7igEcU7EAjoOr9P56yProK9EHPzKXfJGukyuqr/2CMOAXWWEtEOJywdok+xixPmol+qB9w5FNGuSGDRSyr8cGWFF5oY91NW5rGXC1ZHvGD5NCJkgkrGSQfvlprtVTW/pIlhlCptQe26RhmswCuaR6dvWpvdPaqurBjzdwdSsgG+QvP13QvEn2HREAAAAASUVORK5CYII=" alt="시공" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">시공</span><span class="job-value">48<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAt9JREFUeAHtmCFsFEEUhn+gCgyiNSBae2cp9s6CQVBsMYS0GkdCXRNcExScJiEIQGCKwPQMBgziztQctmcQ1CDgfdk32eWyd7s7c21Cun/yZ293Z7L/vn3zz3sntWjR4lxxScvBVWPfuGlc93MwcQ6NIy0ByxDcNe4Y1/z8VLngIk6M+36MxhWloWd8YrxmPDIeGN/6dYQ/VhbZDeMNv/7d+FORuKx4ENHdwvnYOC0Zx/VD/82LPVP+NRojRfCWH5t8YsYiekeRiBVMjvZcwLDk/kjli4yxpEpX5XleiVjBfT9+nXN/4CzDkR/vKgIxi47IPvLfx8YvxuvGz8qiV4ZfyvL2o/Gmsgh3/fqxGiAmwiF3T534LO4wXTBnOjMmzN1SQ8QIZtEQmXfG92oO5rxUZA7HbBx3jA/9N4sO2wo7Gi8ymxYIW3OyC24qF8tLf9AZC5Y/eFtZHsYAByHSYzXEiuJANIkMgln1P4yryqMZQLRD1MnfjrIIR4lNESwXAvhKhzXnrCsRKTtd2OE6DeaEsRNFIkUwn5lcXFM90T0fO9J8v65EimAQbG1Xiwsa7gXPfaUEpJaXLKQ/xtvKIkjZSKr89vsswnvKXojdEBv7pgQsq+O4b3xQOA872qofSQHEflIiliUYII7PvqHcDYg2tkeVNtVFREqE2TQ6ymvbpzXmPFfuLmNFNKZNNw7EsbiK9QCo23Uwh3QJNoh4auraXXVdwYgkP4vWRW6y4rfVDLzca+Mt5QEI3Qs2OVw0ucqHEbin3GeJRojEUPM7jiowb6Dcx0+UN7UvtMDTVyrEhg4XkRj+VP92ysWxb1QPZenDy/PF+Ip9f27pfxiLBIeoVtWsEzXvnMtAMAZ+H0+ns96fHbRIMAuDiqyqwD7QcsHziHJprV2Vw9FFylkhtfg5d/x3gqt8GKPfm7kW6gQa0dSUCcURPlzM2ShbA7T084rz5HangNBVt2jRokUi/gKOvZUMgkSsCAAAAABJRU5ErkJggg==" alt="OB" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">OB</span><span class="job-value">17<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAcFJREFUeAHtmC9PAzEYxp8xFFhOITgBAgQIZkCgQeMQ6DkSDISggC8w1ASKJfdBMBgQGLCgEGAQm8HwvmkrNnptL9d2f9Jf8iS3tH37XP+81w5IJBKJmaJhKFsgHZNa8jkmD6R70mC0YN7QiM3uyUaviEcu+2W6o4Umw9yoTzqB5k0DwrN5S9rWFc5ZGg8Q16zqkwdqUVdoMzxxNA1lX6Qn0ifi8016IX3AAxn8UikDNSvU5cDnpH3SM/ysbX75K4jUybP5a2vguobZ7CVpHWJD9OEHjsMvviHjW0fbZYSV2Zz0TrqBv8zBI/pI2pLxN+Xv0pG2GQ5pVlHJtMlwDLMKZ9Mmw2ekNYh1doHwHxBleoe0TFqFOFMMYdp0PQiT/MU5QBy4n0z229NVMI3wD0Ty3oWYKuYN4TiUYrPXKPlo2DZdLNNOZhmXtBbatLPZqqyQ7kiFfPYVs5BxfcUcYgkl59QatGTc2mTwf9AJ2jdPVQfjoSP7/8fUHeCnzrDpEso3ZT72tSFuH7FQ61eb3kz/S3CaOcV4Nl5pTm5YGnK6yWE/WLfhTtehDt8+tIctm2FXigp1j1CDlCUSiUQiMdv8AQ2UXyoTJ4RaAAAAAElFTkSuQmCC" alt="기술개발" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">기술개발</span><span class="job-value">217<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAwtJREFUeAHtWC2TE0EQfXyojQCRGExiEMEgQOcEhuhoUGiqwGCgEFCFo4rfcFW404k9kASDSOxGJwZzAgTMq+mumZvb7G7Sc3cmr6prdndmd9/29rzuGeCAAw64UtxAPoycHTnrOyucnTlbOTt19g2ZkINwz9krZ4OaMWtnH6U1wUqYZN9KSzIzZz+cbeA9TZtE/WbSt2DDJyFTOnvvbAkfCsRv+JCYO3vg7B78B5jC4yb2B2NWPfcZgWgKevuDjCPxxzDAQvhI2hMhVQd+zEyOn8IAC+G+tKuW4+fJfXvBQriQti1hnWwdGGAhfC2wEFaPtf3Fu4ZQJSyEl9K2nfUjaUsYYCF8Ki1nfa9hLPtVVUw6bEkcms0G8F7+iWot5pg3zu7Cf+QMBlhTM5XiHUJ80nuULxKnVx8hhEwJn5rPYECO4oeknyH88ipM4ROMiSyRs7zsOhsjeJvkSvhQMSlDjJyECZJNE8MCGZGTMGP1dcV1FkZzZMLtFmPGQoaTqJv0vUCIy4UcF1E/k0sZnfMZX5JnbGRcq5VJk6xRAZ7Ii4qK/r8ICYTHf5w9jPo50X5F589xMTMW8nw6ZdhEus7DI3kAv/4Y3lNaRg7lY5g0qADq5Zm8mHXvAuc1t5D7iJfRs7oyfiLtqI50XaaL6905zte8SyHUQUi5CiWf1sgaVoukbyMEj+U8fV5rwhqv2ybMibTj5LqqRPrrJ9Ju855KX22aryOsN24Te3p5LeOG0XUlGk/QeDm1jfA6eW8lrPWwxqh6r0CYnJ3oOA4vE6yEKUX8A5ws9PIg6e8h/AF60KzHVsIkO5VjTqpU+nRfglCdNiHHEkkJM05Twj2EWW8OByIHYXpNJa6P4MV4h4eh07QV0Aq5FqHqPXpTVyILBO9m2wzMRThOJOpJtgyJFUL6NiPnMl8ljqsMZi317hQZkZOwLo0ocVrQ1CWKvZB7I0W9qVKWRRliXAbhWGuzrjaIpnp4id0mDGviO87uw6vFd+yOXd9pBrX4Ky6uTrLAugNfBe68/4NfLR/wH0pToOMipgCLAAAAAElFTkSuQmCC" alt="관리직" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">관리직</span><span class="job-value">329<span>명</span></span></div>
+      </div>
+      <div class="job-item">
+        <div class="job-icon">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAnNJREFUeAHtmC9PJEEUxOvY5MRhTtyZO8EZxCHAoEFjMGtQaAwKgVkMoNHwEUgIFoMCgQGDALtoMAgwK6Ar8zp0hu6eN9uPEJKppLKd2ZnMb/rPq5kGOnX62urBXn3nLWnfwljWwH0xNSO/ptCWwCHsjfNvfAC0FXAIe+R84PyCCtgU2gK4DnssbQKaQ5cCp2C9zKFLgAmwJu0YrBcBfzhPyzWXzo8YUxMYX0Pne2nPC1RMPP5f2jz/CQUq6eERqt4i7F/nWecLOe5F2IHzP1SwO84PKFDpHH5GGtoclmoDPOX8XSBDxaCvnTfRDOvn9j2MgVkJ1gXqCs3QS84/G2AZLNtyLqWqHhrgsHRNKqEnFbAD+aXUJa8JOIQ9QTUl/iigOdT7Ctih8yla1OmeEpZ19hDVgppTQMeOx2B3Uc13dbj0lLA+FEZKaChhnwNAFXSvBSwKoHOwaAM9kQCmbpCOW95sL4DpI68+3hbYHtIPdyz39de8U6yH/VP6G8SGhouKddaXrn3ke3iIt+rBmK4nIgLIRWkfxe4dA24amnESLJeIIWxuKiaBc9AlcZuDVsHmgFPQKwpYTqVV5zvoYpwLd1kD2wQcg9bE7UDO1cb4tBZWA1yHbhO3bWJcBUt9g15c3bFhrsMOUZWuDVRveHzIXcTfyH4J8B2UavN6yV4dKWAJx08gbYy3+lwqfYHPJVhJjCdVAqyJ2xj0GeIjpVLJRyhrcpiGqZ7zCwxy/hQKVNLDnHu+evjSFIvxeiico0Clc7gpxtUJppXFVlUK2hyWstoMrEPTC/KfGSxlud0aQvvFaApLWW9oh9DmsJ06dfoEvQK8JPw3m+vuPAAAAABJRU5ErkJggg==" alt="기타" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="job-info"><span class="job-name">기타</span><span class="job-value">110<span>명</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Companies Section -->
+  <section class="companies-section">
+    <!-- Group 1 -->
+    <article class="company-group">
+      <h3 class="group-title">ENG. Business</h3>
+      <div class="company-list cols-2">
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="한맥기술">
+            </div>
+            <div class="company-count">393<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="teal">+21명</span></div>
+            <div class="metric">퇴사율 <span class="teal">0.5%</span></div>
+          </div>
+        </div>
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="삼안">
+            </div>
+            <div class="company-count">1,974<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="teal">+15명</span></div>
+            <div class="metric">퇴사율 <span class="teal">1.0%</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+    
+    <!-- Group 2 -->
+    <article class="company-group">
+      <h3 class="group-title">Manufacture & Construction</h3>
+      <div class="company-list cols-3">
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="장헌산업">
+            </div>
+            <div class="company-count">49<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="red">-3명</span></div>
+            <div class="metric">퇴사율 <span class="red">2.7%</span></div>
+          </div>
+        </div>
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="(주)장헌">
+            </div>
+            <div class="company-count">6<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="teal">+9명</span></div>
+            <div class="metric">퇴사율 <span class="teal">1.4%</span></div>
+          </div>
+        </div>
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="피티씨">
+            </div>
+            <div class="company-count">29<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="red">-4명</span></div>
+            <div class="metric">퇴사율 <span class="red">3.4%</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Group 3 -->
+    <article class="company-group">
+      <h3 class="group-title">Environment EPC & Plant</h3>
+      <div class="company-list cols-1">
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="한라산업개발">
+            </div>
+            <div class="company-count">222<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="red">-13명</span></div>
+            <div class="metric">퇴사율 <span class="red">6.8%</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Group 4 -->
+    <article class="company-group">
+      <h3 class="group-title">IT Business</h3>
+      <div class="company-list cols-1">
+        <div class="company-item">
+          <div class="company-main">
+            <div class="company-logo">
+              <img src="data:image/png;base64,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" alt="바론컨설턴트">
+            </div>
+            <div class="company-count">217<span>명</span></div>
+          </div>
+          <div class="company-metrics">
+            <div class="metric">전월대비 <span class="teal">+17명</span></div>
+            <div class="metric">퇴사율 <span class="teal">1.1%</span></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 4. Bottom Charts Section -->
+  <section class="charts-section">
+    <!-- Chart 1 -->
+    <article class="chart-card">
+      <div class="chart-title-area">
+        <h3 class="chart-title">근속연수 분포</h3>
+        <span class="chart-unit">(단위 : %)</span>
+      </div>
+      <div class="chart-body">
+        <svg class="barsvg" width="100%" height="100%" viewBox="0 0 460 200">
+          <defs>
+            <linearGradient id="grad1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e3d4c3"/>
+              <stop offset="100%" stop-color="#baa790"/>
+            </linearGradient>
+            <linearGradient id="grad1_hi" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fac898"/>
+              <stop offset="100%" stop-color="#d49557"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#e2ddd5">
+            <line x1="38" y1="20" x2="440" y2="20"/><line x1="38" y1="70" x2="440" y2="70"/><line x1="38" y1="120" x2="440" y2="120"/><line x1="38" y1="170" x2="440" y2="170"/>
+          </g>
+          <g>
+            <text x="10" y="174">0</text><text x="3" y="124">10</text><text x="3" y="74">20</text><text x="3" y="24">30</text>
+          </g>
+          <g fill="url(#grad1)">
+            <rect x="59" y="166" width="24" height="4" rx="3"/>
+            <rect x="124" y="63" width="24" height="107" rx="4"/>
+            <rect x="189" y="102" width="24" height="68" rx="4"/>
+            <rect x="254" y="52" width="24" height="118" rx="4" fill="url(#grad1_hi)"/>
+            <rect x="319" y="80" width="24" height="90" rx="4"/>
+            <rect x="384" y="54" width="24" height="116" rx="4"/>
+          </g>
+          <g text-anchor="middle" class="barlabel">
+            <text x="71" y="160">0</text><text x="136" y="58">21.3</text><text x="201" y="98">13.6</text>
+            <text x="266" y="47">23.4</text><text x="331" y="75">18.0</text><text x="396" y="50">23.3</text>
+          </g>
+          <g text-anchor="middle">
+            <text x="71" y="193">0~1년</text><text x="136" y="193">1~3년</text><text x="201" y="193">3~5년</text>
+            <text x="266" y="193" font-weight="900" fill="#633500">5~10년</text><text x="331" y="193">10~15년</text><text x="396" y="193">15년 ~</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Chart 2 -->
+    <article class="chart-card">
+      <div class="chart-title-area">
+        <h3 class="chart-title">학력별 현황</h3>
+        <span class="chart-unit">(단위 : %)</span>
+      </div>
+      <div class="chart-body">
+        <svg class="barsvg" width="100%" height="100%" viewBox="0 0 420 200">
+          <defs>
+            <linearGradient id="grad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e3d4c3"/>
+              <stop offset="100%" stop-color="#baa790"/>
+            </linearGradient>
+            <linearGradient id="grad2_hi" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e2b98b"/>
+              <stop offset="100%" stop-color="#b88a56"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#e2ddd5">
+            <line x1="40" y1="20" x2="405" y2="20"/><line x1="40" y1="70" x2="405" y2="70"/><line x1="40" y1="120" x2="405" y2="120"/><line x1="40" y1="170" x2="405" y2="170"/>
+          </g>
+          <text x="5" y="174">0</text><text x="0" y="124">20</text><text x="0" y="74">40</text><text x="0" y="24">80</text>
+          <g fill="url(#grad2)">
+            <rect x="68" y="158" width="24" height="12" rx="4"/>
+            <rect x="133" y="150" width="24" height="20" rx="4"/>
+            <rect x="198" y="27" width="24" height="143" rx="4" fill="url(#grad2_hi)"/>
+            <rect x="263" y="131" width="24" height="39" rx="4"/>
+            <rect x="328" y="163" width="24" height="7" rx="4"/>
+          </g>
+          <g text-anchor="middle" class="barlabel">
+            <text x="80" y="153">4.4</text><text x="145" y="145">8.2</text><text x="210" y="22">65.7</text>
+            <text x="275" y="126">18.5</text><text x="340" y="158">3.1</text>
+          </g>
+          <g text-anchor="middle">
+            <text x="80" y="193">고졸</text><text x="145" y="193">전문학사</text><text x="210" y="193" font-weight="900" fill="#633500">학사</text>
+            <text x="275" y="193">석사</text><text x="340" y="193">박사</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Chart 3 -->
+    <article class="chart-card linechart">
+      <div class="chart-title-area">
+        <h3 class="chart-title">월별 인력 추이</h3>
+        <div class="legend">
+          <span class="legend-item"><span style="display:inline-flex; align-items:center;"><span style="width:18px; height:3px; background:#ff7300; display:inline-block; position:relative;"><i style="width:8px; height:8px; background:#ff7300; border-radius:50%; position:absolute; top:-2.5px; left:5px;"></i></span></span> 총 인원</span>
+          <span class="legend-item"><i class="legend-sq" style="background:linear-gradient(to bottom, #a6eadf, #55c2b6); border-radius:2px;"></i>신규입사자</span>
+          <span class="legend-item"><i class="legend-sq" style="background:linear-gradient(to bottom, #ffbaba, #db6767); border-radius:2px;"></i>퇴사자</span>
+          <span style="font-size:15px; margin-left: 5px;">(단위 : 명)</span>
+        </div>
+      </div>
+      <div class="chart-body">
+        <svg width="100%" height="100%" viewBox="0 0 900 220">
+          <defs>
+            <pattern id="wave_break" x="0" y="0" width="80" height="20" patternUnits="userSpaceOnUse">
+              <path d="M0,8 Q20,2 40,8 T80,8" fill="none" stroke="#c0b9a8" stroke-width="1.2"/>
+              <path d="M0,11 Q20,5 40,11 T80,11" fill="none" stroke="#c0b9a8" stroke-width="1.2"/>
+            </pattern>
+            <linearGradient id="grad_teal" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a6eadf"/>
+              <stop offset="100%" stop-color="#55c2b6"/>
+            </linearGradient>
+            <linearGradient id="grad_red" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffbaba"/>
+              <stop offset="100%" stop-color="#db6767"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#e4ded5">
+            <line x1="60" y1="20" x2="880" y2="20"/><line x1="60" y1="50" x2="880" y2="50"/>
+            <line x1="60" y1="80" x2="880" y2="80"/><line x1="60" y1="200" x2="880" y2="200"/>
+          </g>
+          <!-- 중앙 물결(Break) 표시 -->
+          <rect x="40" y="105" width="840" height="20" fill="url(#wave_break)"/>
+          <g font-size="16" fill="#555">
+            <text x="10" y="24">3,000</text><text x="10" y="54">2,850</text><text x="10" y="84">2,700</text>
+            <text x="20" y="155">100</text>
+            <text x="30" y="180">50</text>
+            <text x="30" y="205">0</text>
+          </g>
+          <polyline points="92,80 158,76 224,70 290,68 356,67 422,62 488,61 554,59 620,60 686,56 752,50 818,42" fill="none" stroke="#ff7300" stroke-width="3"/>
+          <g fill="#ff7300" font-size="17" font-weight="900" text-anchor="middle">
+            <circle cx="92" cy="80" r="4"/><circle cx="158" cy="76" r="4"/><circle cx="224" cy="70" r="4"/><circle cx="290" cy="68" r="4"/>
+            <circle cx="356" cy="67" r="4"/><circle cx="422" cy="62" r="4"/><circle cx="488" cy="61" r="4"/><circle cx="554" cy="59" r="4"/>
+            <circle cx="620" cy="60" r="4"/><circle cx="686" cy="56" r="4"/><circle cx="752" cy="50" r="4"/><circle cx="818" cy="42" r="4"/>
+            <text x="92" y="67">2,700</text><text x="158" y="63">2,720</text><text x="224" y="57">2,750</text><text x="290" y="55">2,760</text>
+            <text x="356" y="54">2,765</text><text x="422" y="49">2,790</text><text x="488" y="48">2,795</text><text x="554" y="46">2,805</text>
+            <text x="620" y="47">2,800</text><text x="686" y="43">2,820</text><text x="752" y="37">2,850</text><text x="818" y="29">2,890</text>
+          </g>
+          <g font-size="16" font-weight="900" text-anchor="middle" transform="translate(0, 20)">
+            <g fill="url(#grad_teal)">
+              <rect x="78" y="144" width="17" height="36"/><text x="86" y="138">72</text>
+              <rect x="144" y="147" width="17" height="33"/><text x="152" y="141">66</text>
+              <rect x="210" y="146" width="17" height="34"/><text x="218" y="140">68</text>
+              <rect x="276" y="145" width="17" height="35"/><text x="284" y="139">70</text>
+              <rect x="342" y="147" width="17" height="33"/><text x="350" y="141">67</text>
+              <rect x="408" y="146" width="17" height="34"/><text x="416" y="140">68</text>
+              <rect x="474" y="148" width="17" height="32"/><text x="482" y="142">65</text>
+              <rect x="540" y="145" width="17" height="35"/><text x="548" y="139">70</text>
+              <rect x="606" y="144" width="17" height="36"/><text x="614" y="138">72</text>
+              <rect x="672" y="144" width="17" height="36"/><text x="680" y="138">72</text>
+              <rect x="738" y="142" width="17" height="38"/><text x="746" y="136">76</text>
+              <rect x="804" y="138" width="17" height="42"/><text x="812" y="132">85</text>
+            </g>
+            <g fill="url(#grad_red)">
+              <rect x="101" y="160" width="17" height="20"/><text x="109" y="154">40</text>
+              <rect x="167" y="159" width="17" height="21"/><text x="175" y="153">42</text>
+              <rect x="233" y="158" width="17" height="22"/><text x="241" y="152">43</text>
+              <rect x="299" y="156" width="17" height="24"/><text x="307" y="150">48</text>
+              <rect x="365" y="161" width="17" height="19"/><text x="373" y="155">38</text>
+              <rect x="431" y="159" width="17" height="21"/><text x="439" y="153">41</text>
+              <rect x="497" y="160" width="17" height="20"/><text x="505" y="154">40</text>
+              <rect x="563" y="159" width="17" height="21"/><text x="571" y="153">42</text>
+              <rect x="629" y="159" width="17" height="21"/><text x="637" y="153">42</text>
+              <rect x="695" y="157" width="17" height="23"/><text x="703" y="151">45</text>
+              <rect x="761" y="156" width="17" height="24"/><text x="769" y="150">48</text>
+              <rect x="827" y="158" width="17" height="22"/><text x="835" y="152">43</text>
+            </g>
+          </g>
+          <g font-size="16" fill="#333" text-anchor="middle">
+            <text x="98" y="218">07월</text><text x="164" y="218">08월</text><text x="230" y="218">09월</text><text x="296" y="218">10월</text>
+            <text x="362" y="218">11월</text><text x="428" y="218">12월</text><text x="494" y="218">01월</text><text x="560" y="218">02월</text>
+            <text x="626" y="218">03월</text><text x="692" y="218">04월</text><text x="758" y="218">05월</text><text x="824" y="218">06월</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+  </section>
+
+</main>
+</body>
+</html>
